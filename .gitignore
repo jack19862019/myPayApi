@@ -1,0 +1,10 @@
+*.iml
+*.iws
+*.ipr
+.idea/
+*.class
+*/target/
+*.lst
+*.yml
+*.xml
+*.properties
