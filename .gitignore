@@ -6,5 +6,4 @@
 */target/
 *.lst
 *.yml
-*.xml
 *.properties
