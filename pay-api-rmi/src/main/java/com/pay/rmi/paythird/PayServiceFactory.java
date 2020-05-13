@@ -2,8 +2,12 @@ package com.pay.rmi.paythird;
 
 
 import com.pay.rmi.common.exception.RException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +27,7 @@ public class PayServiceFactory {
         return service;
     }
 
-
-    /*
-    public PayService getService(String channelNo, String script) {
+    /*public PayService getService(String channelNo, String script) {
         if (StringUtils.isNotBlank(channelNo) && StringUtils.isNotBlank(script)) {
             //获取script的hashCode
             String scriptCode = String.valueOf(script.hashCode());
