@@ -15,8 +15,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "mcp_pay_type")
 public class McpPayTypeEntity extends BaseEntity {
-    @CreatedBy
-    private String createUser;
 
     @ManyToOne
     @JoinColumn(name = "pay_type_id")

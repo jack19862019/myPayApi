@@ -26,8 +26,6 @@ import java.util.Set;
 )
 @NoArgsConstructor
 public class SysMenuEntity extends BaseEntity implements Serializable {
-    @CreatedBy
-    private String createUser;
 
     private String name;
 

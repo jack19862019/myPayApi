@@ -16,7 +16,6 @@ import java.util.Set;
 @Where(clause = "is_delete=1")
 @Table(name = "mcp_config")
 public class McpConfigEntity extends BaseEntity {
-    private String createUser;
 
     //MD5就是单个的值，RSA就是json
     @Column(columnDefinition = "text")

@@ -19,8 +19,6 @@ import java.util.Set;
                 @Index(columnList = "payTypeFlag", unique = true),
         })
 public class PayTypeEntity extends BaseEntity {
-    @CreatedBy
-    private String createUser;
 
     //支付方式名称
     private String payTypeName;

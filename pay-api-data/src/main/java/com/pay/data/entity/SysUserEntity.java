@@ -18,8 +18,6 @@ import javax.persistence.*;
         }
 )
 public class SysUserEntity extends BaseEntity {
-    @CreatedBy
-    private String createUser;
 
     private String username;
 

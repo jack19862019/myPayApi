@@ -23,8 +23,6 @@ import java.util.Set;
         }
 )
 public class SysRoleEntity extends BaseEntity implements Serializable {
-    @CreatedBy
-    private String createUser;
 
     private String name;
 

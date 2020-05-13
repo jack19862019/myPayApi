@@ -3,7 +3,6 @@ package com.pay.data.statistical;
 import com.pay.common.enums.DateIntervalType;
 import com.pay.common.exception.CustomerException;
 import com.pay.common.utils.Statistical;
-import com.pay.data.entity.StatisticalEntiey;
 import com.pay.data.leaderboard.OrderMerchant;
 import com.pay.data.mapping.StatisticalDao;
 import org.apache.commons.lang3.StringUtils;

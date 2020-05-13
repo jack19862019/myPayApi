@@ -20,8 +20,6 @@ import java.math.BigDecimal;
         }
 )
 public class OrderEntity extends BaseEntity {
-    @CreatedBy
-    private String createUser;
 
     //订单号
     private String orderNo;

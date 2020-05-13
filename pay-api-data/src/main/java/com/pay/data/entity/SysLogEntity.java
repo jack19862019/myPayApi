@@ -33,8 +33,6 @@ import java.io.Serializable;
 @Where(clause = "is_delete=1")
 @NoArgsConstructor
 public class SysLogEntity extends BaseEntity implements Serializable {
-    @CreatedBy
-    private String createUser;
 
     // 操作用户
     private String username;

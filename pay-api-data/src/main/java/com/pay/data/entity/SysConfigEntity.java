@@ -14,8 +14,6 @@ import javax.persistence.Table;
 @Where(clause = "is_delete=1")
 @Table(name = "sys_config")
 public class SysConfigEntity extends BaseEntity {
-    @CreatedBy
-    private String createUser;
 
     private String domain;
 

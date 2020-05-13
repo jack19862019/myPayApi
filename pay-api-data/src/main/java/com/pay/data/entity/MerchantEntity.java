@@ -22,8 +22,6 @@ import java.util.Set;
                 @Index(columnList = "auditStatus"),
         })
 public class MerchantEntity extends BaseEntity {
-    @CreatedBy
-    private String createUser;
 
     //商户号
     private String merchantNo;

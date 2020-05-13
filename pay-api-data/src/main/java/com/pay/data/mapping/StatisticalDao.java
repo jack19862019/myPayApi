@@ -1,6 +1,5 @@
 package com.pay.data.mapping;
 
-import com.pay.data.entity.StatisticalEntiey;
 import com.pay.data.leaderboard.OrderAmountParams;
 import com.pay.data.leaderboard.OrderMerchant;
 import com.pay.data.leaderboard.OrderTypeAmountParams;

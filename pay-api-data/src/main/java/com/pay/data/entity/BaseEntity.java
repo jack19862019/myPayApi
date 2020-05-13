@@ -28,6 +28,9 @@ class BaseEntity implements Serializable {
     @CreatedDate
     private Date createTime;
 
+    @CreatedBy
+    private String createUser;
+
     @LastModifiedBy
     private String updateUser;
 

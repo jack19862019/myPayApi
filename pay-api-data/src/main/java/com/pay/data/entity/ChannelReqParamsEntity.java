@@ -12,14 +12,13 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Where(clause = "is_delete=1")
-@Table(name = "channel",
+@Table(name = "channel_req_params",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"channelName", "channelFlag"})},
         indexes = {
                 @Index(columnList = "channelName"),
                 @Index(columnList = "channelFlag"),
         })
-public class ChannelEntity extends BaseEntity {
+public class ChannelReqParamsEntity extends BaseEntity {
 
     //支付通道名称
     private String channelName;
