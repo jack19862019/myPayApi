@@ -16,7 +16,6 @@ import com.pay.rmi.paythird.AbstractPay;
 import com.tuyang.beanutils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import sun.security.krb5.internal.PAData;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
