@@ -42,8 +42,8 @@ public class OrderEntity extends BaseEntity {
 
     //支付方式ID
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "payTypeFlag", referencedColumnName = "payTypeFlag")
-    private PayTypeEntity payType;
+    @JoinColumn(name = "up_pay_type_id")
+    private PayTypeEntity payTypeEntity;
 
     //订单金额
     private BigDecimal orderAmount;

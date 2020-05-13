@@ -17,8 +17,8 @@ import javax.persistence.Table;
 public class McpPayTypeEntity extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "pay_type_id")
-    private PayTypeEntity payType;
+    @JoinColumn(name = "up_pay_type_id")
+    private UpMerchantPayTypeEntity upMerchantPayTypeEntity;
 
     @ManyToOne
     @JoinColumn(name = "mcp_config_id")
