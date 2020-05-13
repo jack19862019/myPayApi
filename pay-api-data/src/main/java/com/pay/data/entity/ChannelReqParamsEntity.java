@@ -12,41 +12,15 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "channel_req_params",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"channelName", "channelFlag"})},
+@Table(name = "up_req_params",
         indexes = {
-                @Index(columnList = "channelName"),
-                @Index(columnList = "channelFlag"),
+                @Index(columnList = "upReqParamsKey"),
+                @Index(columnList = "valuePropertyParams"),
         })
 public class ChannelReqParamsEntity extends BaseEntity {
 
-    //支付通道名称
-    private String channelName;
+    private String upReqParamsKey;
 
-    //支付通道标识（名称的拼音首字母）
-    private String channelFlag;
-
-    //备注
-    private String remark;
-
-    //联系人
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "channel_id")
-    private Set<ChannelContactEntity> contacts = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "z_channel_pay_type",
-            joinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "pay_type_id", referencedColumnName = "id")}
-    )
-    private Set<PayTypeEntity> payTypes;
-
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "channel")
-    private Set<McpConfigEntity> mcpConfigs = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "channel")
-    private Set<OrderEntity> orders;
-
-
+    private String valuePropertyParams;
 
 }

@@ -5,5 +5,4 @@
 *.class
 */target/
 *.lst
-*.yml
 *.properties
