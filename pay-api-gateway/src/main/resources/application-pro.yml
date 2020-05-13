@@ -1,0 +1,54 @@
+spring:
+  redis:
+    host: 10.79.78.164
+    port: 6379
+    password:
+    timeout: 5000
+    database: 1
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+  datasource:
+    druid:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: jdbc:log4jdbc:mysql://47.56.19.236:3306/payAdmin?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&autoReconnect=true&failOverReadOnly=false
+      username: root
+      password: Oo0oO0o0o0
+
+      initial-size: 3
+      min-idle: 3
+      max-active: 15
+      max-wait: 5000
+      time-between-eviction-runs-millis: 90000
+      min-evictable-idle-time-millis: 1800000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+      validation-query: select 1
+      # 配置监控统计拦截的filters
+      filters: stat
+      stat-view-servlet:
+        url-pattern: /druid/*
+        reset-enable: false
+
+      web-stat-filter:
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
+jwt:
+  header: Authorization
+  secret: mySecret
+  #24小时
+  expiration: 864000000
+
+server:
+  port: 00000000000000000000000
+  servlet:
+    context-path: /api
