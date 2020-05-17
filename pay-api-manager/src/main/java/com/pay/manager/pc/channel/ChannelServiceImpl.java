@@ -50,15 +50,6 @@ public class ChannelServiceImpl extends AbstractHelper<ChannelRepository, Channe
         return list.map(e -> pageCopy(e, ChannelPageRespParams.class));
     }
 
-    @Override
-    public Long getCountChannel() {
-        UserInfo userDetails = SecurityUtils.getUserDetails();
-        RoleType roleType = userDetails.getRoleType();
-        return RoleType.MERCHANT.equals(roleType) ?
-                mcpConfigRepository.findAllByMerchant_MerchantNo(getMerchantByLogin().getMerchantNo())
-                        .parallelStream().map(McpConfigEntity::getChannel).count() : count();
-    }
-
     @Autowired
     ChannelContactRepository channelContactRepository;
 

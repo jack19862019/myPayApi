@@ -1,5 +1,7 @@
 package com.pay.data.entity;
 
+import com.pay.common.enums.IsDelete;
+import com.pay.common.enums.IsValue;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
@@ -12,15 +14,20 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "up_req_params",
-        indexes = {
-                @Index(columnList = "upReqParamsKey"),
-                @Index(columnList = "valuePropertyParams"),
-        })
+@Table(name = "channel_up_req_params")
 public class ChannelReqParamsEntity extends BaseEntity {
 
-    private String upReqParamsKey;
+    private String chineseStr;
 
-    private String valuePropertyParams;
+    private String downReqStr;
+
+    private String upReqStr;
+
+    private IsValue isValue;
+
+    private String pattenStr;
+
+    @ManyToOne
+    private ChannelEntity channel;
 
 }

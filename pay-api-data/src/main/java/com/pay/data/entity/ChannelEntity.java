@@ -3,7 +3,6 @@ package com.pay.data.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -48,6 +47,9 @@ public class ChannelEntity extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "channel")
     private Set<OrderEntity> orders;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "channel_id")
+    private Set<ChannelReqParamsEntity> channelReqParamsEntities;
 
 
 }

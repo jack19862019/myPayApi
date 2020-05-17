@@ -8,12 +8,11 @@ import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.MerchantEntity;
 import com.pay.rmi.api.req.OrderApiParams;
-import com.pay.rmi.api.req.OrderReqParams;
+import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.common.utils.MatchUtils;
 import com.pay.rmi.service.ApiChannelService;
 import com.pay.rmi.service.ApiMerchantChannelService;
 import com.pay.rmi.service.ApiMerchantService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
 @Component
 public class CheckRequestHelper {

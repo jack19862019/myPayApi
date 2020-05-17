@@ -3,7 +3,7 @@ package com.pay.rmi.api;
 import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.MerchantEntity;
-import com.pay.rmi.api.req.OrderReqParams;
+import com.pay.data.params.OrderReqParams;
 import lombok.Data;
 
 @Data

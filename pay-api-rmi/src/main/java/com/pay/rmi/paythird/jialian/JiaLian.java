@@ -1,7 +1,6 @@
 package com.pay.rmi.paythird.jialian;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.pay.common.enums.OrderStatus;
 import com.pay.common.utils.DateUtil;
 import com.pay.common.utils.api.Md5Utils;
@@ -9,11 +8,10 @@ import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.MerchantEntity;
 import com.pay.data.entity.OrderEntity;
-import com.pay.rmi.api.req.OrderReqParams;
+import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.common.exception.RException;
 import com.pay.rmi.common.utils.BuildFormUtils;
-import com.pay.rmi.common.utils.HttpsParams;
 import com.pay.rmi.common.utils.LogByMDC;
 import com.pay.rmi.common.utils.SignUtils;
 import com.pay.rmi.pay.constenum.OutChannel;
@@ -22,13 +20,7 @@ import com.tuyang.beanutils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;

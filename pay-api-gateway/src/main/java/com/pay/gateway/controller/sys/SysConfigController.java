@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/sys/config")
 public class SysConfigController extends AbstractController {
 
+
+
     @PostMapping
     @SysParamsValidator
     @ApiOperation(value = "新增")

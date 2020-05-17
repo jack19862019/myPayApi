@@ -4,16 +4,14 @@ import com.pay.data.entity.OrderEntity;
 import com.pay.data.mapper.ChannelRepository;
 import com.pay.data.mapper.MerchantRepository;
 import com.pay.data.mapper.PayTypeRepository;
-import com.pay.rmi.api.req.OrderReqParams;
+import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.pay.order.delay.NotifyTask;
 import com.pay.rmi.service.ApiOrderService;
 import com.tuyang.beanutils.BeanCopyUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Date;
 

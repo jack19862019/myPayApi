@@ -1,6 +1,7 @@
 package com.pay.manager.pc.channel;
 
 import com.pay.common.page.PageReqParams;
+import com.pay.data.entity.ChannelEntity;
 import com.pay.manager.pc.channel.params.ChannelDetailRespParams;
 import com.pay.manager.pc.channel.params.ChannelPageRespParams;
 import com.pay.manager.pc.channel.params.ChannelQuery;
@@ -18,6 +19,4 @@ public interface ChannelService {
     ChannelDetailRespParams select(Long id);
 
     Page<ChannelPageRespParams> selectPage(ChannelQuery query, PageReqParams reqParams);
-
-    Long getCountChannel();
 }

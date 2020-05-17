@@ -4,7 +4,7 @@ import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.MerchantEntity;
 import com.pay.data.entity.OrderEntity;
-import com.pay.rmi.api.req.OrderReqParams;
+import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.common.exception.RException;
 import org.dom4j.DocumentException;

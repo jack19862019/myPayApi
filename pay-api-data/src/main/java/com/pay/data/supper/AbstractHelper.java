@@ -63,6 +63,10 @@ public abstract class AbstractHelper<R extends BaseRepository<T, A>, T, A> {
         return repository.save(entity);
     }
 
+    protected <S extends T> List<S> saveAll(Iterable<S> iterables) {
+        return repository.saveAll(iterables);
+    }
+
     protected <Q> List<T> getList(Q criteria) {
         return repository.findAll((root, cq, cb) -> QueryHelp.getPredicate(root, criteria, cb));
     }
