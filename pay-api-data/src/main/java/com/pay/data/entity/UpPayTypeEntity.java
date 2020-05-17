@@ -11,13 +11,13 @@ import java.util.Set;
 @Setter
 @Entity
 @Where(clause = "is_delete=1")
-@Table(name = "upMerchantPayType",
+@Table(name = "upPayType",
         uniqueConstraints = {@UniqueConstraint(columnNames={"upPayTypeName", "upPayTypeFlag"})},
         indexes = {
                 @Index(columnList = "upPayTypeName"),
                 @Index(columnList = "upPayTypeFlag", unique = true),
         })
-public class UpMerchantPayTypeEntity extends BaseEntity {
+public class UpPayTypeEntity extends BaseEntity {
 
     //支付方式名称
     private String upPayTypeName;
@@ -28,17 +28,18 @@ public class UpMerchantPayTypeEntity extends BaseEntity {
     //备注
     private String upRemark;
 
-    @ManyToMany(mappedBy = "upPayTypes")
-    private Set<ChannelEntity> channels;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "channelFlag", referencedColumnName = "channelFlag")
+    private ChannelEntity channelEntity;
 
-    @OneToMany(mappedBy = "upMerchantPayTypeEntity")
+    @OneToMany(mappedBy = "upPayTypeEntity")
     private Set<McpPayTypeEntity> mcpPayType;
 
-    @OneToMany(mappedBy = "payTypeEntity")
+    @OneToMany(mappedBy = "upPayTypeEntity")
     private Set<OrderEntity> orders;
 
     //平台支付方式ID
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "pay_type_id")
+    @JoinColumn(name = "payTypeFlag",referencedColumnName = "payTypeFlag")
     private PayTypeEntity payTypeEntity;
 }

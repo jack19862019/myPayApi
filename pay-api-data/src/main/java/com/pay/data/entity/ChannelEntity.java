@@ -3,7 +3,6 @@ package com.pay.data.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -35,12 +34,8 @@ public class ChannelEntity extends BaseEntity {
     @JoinColumn(name = "channel_id")
     private Set<ChannelContactEntity> contacts = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "z_channel_pay_type",
-            joinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "up_pay_type_id", referencedColumnName = "id")}
-    )
-    private Set<UpMerchantPayTypeEntity> upPayTypes;
+    @OneToMany(mappedBy = "channelEntity")
+    private Set<UpPayTypeEntity> upPayTypes;
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "channel")
     private Set<McpConfigEntity> mcpConfigs = new HashSet<>();

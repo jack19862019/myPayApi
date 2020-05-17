@@ -5,7 +5,6 @@ import com.pay.common.enums.OrderStatus;
 import com.pay.common.enums.OrderType;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -40,10 +39,10 @@ public class OrderEntity extends BaseEntity {
     //上游商户号
     private String upMerchantNo;
 
-    //支付方式ID
+    //上游支付方式对象
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "up_pay_type_id")
-    private PayTypeEntity payTypeEntity;
+    @JoinColumn(name = "upPayTypeFlag", referencedColumnName = "upPayTypeFlag")
+    private UpPayTypeEntity upPayTypeEntity;
 
     //订单金额
     private BigDecimal orderAmount;
