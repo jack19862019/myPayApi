@@ -34,12 +34,8 @@ public class ChannelEntity extends BaseEntity {
     @JoinColumn(name = "channel_id")
     private Set<ChannelContactEntity> contacts = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "z_channel_pay_type",
-            joinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "pay_type_id", referencedColumnName = "id")}
-    )
-    private Set<PayTypeEntity> payTypes;
+    @OneToMany(mappedBy = "channelEntity")
+    private Set<UpPayTypeEntity> upPayTypes;
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "channel")
     private Set<McpConfigEntity> mcpConfigs = new HashSet<>();

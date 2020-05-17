@@ -3,7 +3,6 @@ package com.pay.data.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -29,12 +28,15 @@ public class PayTypeEntity extends BaseEntity {
     //备注
     private String remark;
 
-    @ManyToMany(mappedBy = "payTypes")
+    /*@ManyToMany(mappedBy = "payTypes")
     private Set<ChannelEntity> channels;
 
     @OneToMany(mappedBy = "payType")
     private Set<McpPayTypeEntity> mcpPayType;
 
     @OneToMany(mappedBy = "payType")
-    private Set<OrderEntity> orders;
+    private Set<OrderEntity> orders;*/
+
+    @OneToMany(mappedBy = "payTypeEntity")
+    private Set<UpPayTypeEntity> upPayTypeEntitySet;
 }
