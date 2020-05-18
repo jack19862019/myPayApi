@@ -1,11 +1,13 @@
 package com.pay.manager.pc.mcp;
 
-import com.pay.common.enums.AmountType;
-import com.pay.common.enums.RoleType;
 import com.pay.common.exception.Assert;
-import com.pay.common.security.SecurityUtils;
-import com.pay.data.entity.*;
-import com.pay.data.mapper.*;
+import com.pay.data.entity.ChannelEntity;
+import com.pay.data.entity.McpConfigEntity;
+import com.pay.data.entity.MerchantEntity;
+import com.pay.data.mapper.ChannelRepository;
+import com.pay.data.mapper.McpConfigRepository;
+import com.pay.data.mapper.MerchantRepository;
+import com.pay.data.mapper.PayTypeRepository;
 import com.pay.data.supper.AbstractHelper;
 import com.pay.manager.pc.mcp.params.*;
 import com.tuyang.beanutils.BeanCopyUtils;
@@ -13,12 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -82,41 +82,6 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
         List<McpConfigEntity> mcp = getList(mcpQuery, new Sort(Sort.Direction.DESC, "merchant_id"));
         Assert.mustBeTrue(!CollectionUtils.isEmpty(mcp) && mcp.size() == 1, "商户通道配置有且只有一个");
         return BeanCopyUtils.copyBean(mcp.get(0), McpConfigDetailParams.class);
-    }
-
-    private void checkAmount(McpAmountReqParams reqParams) {
-        AmountType amountType = reqParams.getAmountType();
-        String amountStr = reqParams.getAmountStr();
-        if (!StringUtils.isEmpty(amountStr)) {
-            Assert.mustBeTrue(!ObjectUtils.isEmpty(amountType), "金额类型不能为空");
-            if (AmountType.FIXED.equals(amountType)){
-                isNumeric(amountStr);
-            }
-            if (AmountType.RANGE.equals(amountType)) {
-                String[] split = amountStr.split(",");
-                isNumeric(split);
-                BigDecimal sm = new BigDecimal(split[0]);
-                BigDecimal mx = new BigDecimal(split[0]);
-                Assert.mustBeTrue(sm.compareTo(mx) < 0, "更小金额不能大于更大金额");
-            }
-            if (AmountType.MULTIPLE.equals(amountType)) {
-                String[] split = amountStr.split(",");
-                isNumeric(split);
-                BigDecimal sm = new BigDecimal(split[0]);
-                BigDecimal bs = new BigDecimal(split[0]);
-                BigDecimal mx = new BigDecimal(split[0]);
-                Assert.mustBeTrue(sm.multiply(bs).compareTo(mx) < 0, "必须满足范围与倍数的关系");
-                Assert.mustBeTrue(mx.divide(bs).compareTo(sm) > 0, "必须满足范围与倍数的关系");
-            }
-        }
-    }
-
-
-    private static void isNumeric(String... split) {
-        for (String s : split) {
-            Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
-            Assert.mustBeTrue(pattern.matcher(s).matches(), s + "不是一个整型的数字");
-        }
     }
 
     private void insertMcpBusiness(McpConfigEntity mcpConfigEntity, McpConfigReqParams reqParams) {

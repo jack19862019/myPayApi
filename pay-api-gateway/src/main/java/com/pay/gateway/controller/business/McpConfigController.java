@@ -8,7 +8,6 @@ import com.pay.common.exception.Assert;
 import com.pay.common.utils.Result;
 import com.pay.gateway.controller.AbstractController;
 import com.pay.manager.pc.mcp.McpConfigService;
-import com.pay.manager.pc.mcp.params.McpAmountReqParams;
 import com.pay.manager.pc.mcp.params.McpConfigReqParams;
 import com.pay.manager.pc.mcp.params.McpQuery;
 import io.swagger.annotations.Api;
