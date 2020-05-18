@@ -72,7 +72,6 @@ public class ApiOrderServiceImpl implements ApiOrderService {
         resp.setChannelName(channelDao.findByChannelFlag(orderEntity.getChannel().getChannelFlag()).getChannelName());
         resp.setMerchantName(merchantDao.findByMerchantNo(orderEntity.getMerchant().getMerchantNo()).getMerchantName());
         resp.setOrderNo(orderEntity.getOrderNo());
-        resp.setPayTypeName(orderEntity.getPayType().getPayTypeName());
         resp.setOrderTime(DateUtil.getCurrentStr(orderEntity.getCreateTime()));
         resp.setStatus(orderEntity.getOrderStatus().equals(OrderStatus.succ) ? "回调成功" : "暂无回调");
         return resp;

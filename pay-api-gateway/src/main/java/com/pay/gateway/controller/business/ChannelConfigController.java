@@ -17,7 +17,7 @@ import java.util.List;
 
 @Api(tags = "系统-通道(各项)配置接口")
 @RestController
-@RequestMapping("/channel/config")
+@RequestMapping("/channel/config/")
 public class ChannelConfigController extends AbstractController {
 
 
@@ -31,10 +31,10 @@ public class ChannelConfigController extends AbstractController {
         return Result.success(channelConfigService.getThisReqParams());
     }
 
-    @PostMapping
-    @ApiOperation(value = "通道入参配置新增")
-    public Result saveChannelConfig(@RequestBody ChannelConfigReqParams reqParams) {
-        channelConfigService.insertChannelConfig(reqParams);
+    @PutMapping("{channelId}")
+    @ApiOperation(value = "通道入参配置修改")
+    public Result saveChannelConfig(@PathVariable Long channelId, @RequestBody ChannelConfigReqParams reqParams) {
+        channelConfigService.saveChannelConfig(channelId, reqParams);
         return Result.success();
     }
 
@@ -42,13 +42,6 @@ public class ChannelConfigController extends AbstractController {
     @ApiOperation(value = "通道入参配置查询")
     public Result getChannelConfig(@PathVariable Long id) {
         return Result.success(channelConfigService.getChannelConfig(id));
-    }
-
-    @PutMapping
-    @ApiOperation(value = "通道入参配置修改")
-    public Result updateChannelConfig(@RequestBody ChannelConfigReqParams reqParams) {
-        channelConfigService.updateChannelConfig(reqParams);
-        return Result.success();
     }
 
 

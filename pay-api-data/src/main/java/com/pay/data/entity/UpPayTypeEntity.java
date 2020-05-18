@@ -28,14 +28,10 @@ public class UpPayTypeEntity extends BaseEntity {
     //备注
     private String upRemark;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "channelFlag", referencedColumnName = "channelFlag")
-    private ChannelEntity channelEntity;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private ChannelEntity channel;
 
-    @OneToMany(mappedBy = "upPayTypeEntity")
-    private Set<McpPayTypeEntity> mcpPayType;
-
-    @OneToMany(mappedBy = "upPayTypeEntity")
+    @OneToMany(mappedBy = "upPayType")
     private Set<OrderEntity> orders;
 
     //平台支付方式ID

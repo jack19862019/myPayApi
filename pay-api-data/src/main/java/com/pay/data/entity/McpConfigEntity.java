@@ -26,9 +26,6 @@ public class McpConfigEntity extends BaseEntity {
     @Convert(converter = EncryptionType.Convert.class)
     private EncryptionType encryptionType;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mcpConfig", orphanRemoval = true)
-    private Set<McpPayTypeEntity> mcpPayType = new HashSet<>();
-
     @ManyToOne
     @JoinColumn(name = "channel_id")
     private ChannelEntity channel;
@@ -36,4 +33,7 @@ public class McpConfigEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "merchant_id")
     private MerchantEntity merchant;
+
+    /*    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mcpConfig", orphanRemoval = true)
+    private Set<McpPayTypeEntity> mcpPayType = new HashSet<>();*/
 }

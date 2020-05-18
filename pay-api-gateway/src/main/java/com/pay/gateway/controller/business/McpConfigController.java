@@ -79,23 +79,6 @@ public class McpConfigController extends AbstractController {
         return Result.success(mcpConfigService.getMcpChannelDetail(mcpQuery));
     }
 
-    @PutMapping("mcp/{id}/{typeId}/amount")
-    @ApiOperation(value = "更改MCP商户通道金额")
-    public Result putMcpAmount(@PathVariable Long id,
-                               @PathVariable Long typeId,
-                               @RequestBody McpAmountReqParams reqParams) {
-        mcpConfigService.putMcpAmount(id, typeId, reqParams);
-        return Result.success();
-    }
-
-    @GetMapping("mcp/{merchantId}/{channelId}/{typeId}/amount")
-    @ApiOperation(value = "MCP商户通道金额")
-    public Result putMcpAmount(@PathVariable Long merchantId,
-                               @PathVariable Long channelId,
-                               @PathVariable Long typeId) {
-        return Result.success(mcpConfigService.getMcpAmount(merchantId, channelId, typeId));
-    }
-
     @Autowired
     McpConfigService mcpConfigService;
 }

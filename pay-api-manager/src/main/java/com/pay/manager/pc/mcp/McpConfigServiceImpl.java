@@ -31,9 +31,9 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
         Long channelId = reqParams.getChannelId();
         Optional<ChannelEntity> byId = channelRepository.findById(channelId);
         Assert.mustBeTrue(byId.isPresent(), "通道不存在");
-        List<Long> alreadyIds = byId.get().getPayTypes().stream().map(PayTypeEntity::getId).collect(toList());
-        List<Long> reduceIds = mcpPayTypeIds.stream().filter(item -> !alreadyIds.contains(item)).collect(toList());
-        Assert.mustBeTrue(CollectionUtils.isEmpty(reduceIds), reduceIds + "支付方式不存在通道:" + channelId + "中");
+        //List<Long> alreadyIds = byId.get().getPayTypes().stream().map(PayTypeEntity::getId).collect(toList());
+        //List<Long> reduceIds = mcpPayTypeIds.stream().filter(item -> !alreadyIds.contains(item)).collect(toList());
+        //Assert.mustBeTrue(CollectionUtils.isEmpty(reduceIds), reduceIds + "支付方式不存在通道:" + channelId + "中");
         McpConfigEntity mcpConfigEntity = BeanCopyUtils.copyBean(reqParams, McpConfigEntity.class, McpConfigOption.class);
         insertMcpBusiness(mcpConfigEntity, reqParams);
     }
@@ -84,16 +84,6 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
         return BeanCopyUtils.copyBean(mcp.get(0), McpConfigDetailParams.class);
     }
 
-    @Override
-    public void putMcpAmount(Long id, Long typeId, McpAmountReqParams reqParams) {
-        checkAmount(reqParams);
-        Assert.mustBeTrue(RoleType.MERCHANT.equals(SecurityUtils.getRoleType()), "商户才能配置金额");
-        McpPayTypeEntity byMcpConfigAndPayType = mcpPayTypeRepository.findByMcpConfig_IdAndPayType_Id(id, typeId);
-        byMcpConfigAndPayType.setAmountType(reqParams.getAmountType());
-        byMcpConfigAndPayType.setAmountStr(reqParams.getAmountStr());
-        mcpPayTypeRepository.save(byMcpConfigAndPayType);
-    }
-
     private void checkAmount(McpAmountReqParams reqParams) {
         AmountType amountType = reqParams.getAmountType();
         String amountStr = reqParams.getAmountStr();
@@ -129,35 +119,14 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
         }
     }
 
-    @Override
-    public McpPayTypeParams getMcpAmount(Long merchantId, Long channelId, Long typeId) {
-        McpConfigEntity mcpConfigEntity = mcpConfigRepository.findByChannel_IdAndMerchant_Id(channelId, merchantId);
-        Set<McpPayTypeEntity> mcpPayTypes = mcpConfigEntity.getMcpPayType();
-        Optional<McpPayTypeEntity> mcpPayType = mcpPayTypes.stream().filter(e -> e.getPayType().getId().equals(typeId)).findFirst();
-        Assert.mustBeTrue(mcpPayType.isPresent(), "还未配置MCP支付类型");
-        return BeanCopyUtils.copyBean(mcpPayType.get(), McpPayTypeParams.class);
-    }
-
     private void insertMcpBusiness(McpConfigEntity mcpConfigEntity, McpConfigReqParams reqParams) {
         MerchantEntity merchant = getMerchant(reqParams.getMerchantId());
         ChannelEntity channel = getChannel(reqParams.getChannelId());
-
-        Set<PayTypeEntity> payTypeEntities = new HashSet<>(payTypeRepository.findAllById(reqParams.getMcpPayTypeIds()));
-        Set<McpPayTypeEntity> mcpPayTypeEntities = new HashSet<>();
-        payTypeEntities.forEach(e -> {
-            McpPayTypeEntity mcpPayTypeEntity = new McpPayTypeEntity();
-            mcpPayTypeEntity.setPayType(e);
-            mcpPayTypeEntities.add(mcpPayTypeEntity);
-        });
-
-        mcpConfigEntity.getMcpPayType().clear();
-        mcpConfigEntity.getMcpPayType().addAll(mcpPayTypeEntities);
 
         mcpConfigEntity.setMerchant(merchant);
         mcpConfigEntity.setChannel(channel);
 
         mcpConfigEntity.setCreateUser(merchant.getMerchantNo());
-        mcpConfigEntity.getMcpPayType().forEach(e -> e.setMcpConfig(mcpConfigEntity));
         save(mcpConfigEntity);
     }
 
@@ -184,7 +153,4 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
 
     @Autowired
     McpConfigRepository mcpConfigRepository;
-
-    @Autowired
-    McpPayTypeRepository mcpPayTypeRepository;
 }

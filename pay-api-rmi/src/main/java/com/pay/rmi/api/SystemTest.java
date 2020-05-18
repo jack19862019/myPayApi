@@ -119,15 +119,8 @@ public class SystemTest {
     @RequestMapping("/{channelNo}/payType")
     public List<PayTypeResp> getPayTypeByChannelNo(@PathVariable String channelNo){
         ChannelEntity channelEntity = channelService.selectByChannelNo(channelNo);
-        Set<PayTypeEntity> payTypes = channelEntity.getPayTypes();
-        List<PayTypeResp> list = new ArrayList<>();
-        for (PayTypeEntity entity : payTypes){
-            PayTypeResp resp = new PayTypeResp();
-            resp.setName(entity.getPayTypeName());
-            resp.setNum(entity.getPayTypeFlag());
-            list.add(resp);
-        }
-        return list;
+
+        return null;
     }
 
 

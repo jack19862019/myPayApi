@@ -47,7 +47,6 @@ public abstract class AbstractPay implements PayService {
         order.setChannel(channelRepository.findByChannelFlag(reqParams.getChannelNo()));
         order.setMerchant(merchantRepository.findByMerchantNo(reqParams.getMerchNo()));
         order.setOrderAmount(new BigDecimal(reqParams.getAmount()));
-        order.setPayType(payTypeRepository.findByPayTypeFlag(reqParams.getOutChannel()));
         order.setUpMerchantNo(upMerchantNo);
         order.setBusinessNo(businessNo);
         order.setCreateTime(new Date());

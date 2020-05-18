@@ -42,25 +42,9 @@ public class ChannelConfigServiceImpl extends AbstractHelper<ChannelReqParamsRep
     }
 
     @Override
-    public void insertChannelConfig(ChannelConfigReqParams reqParams) {
-        List<ChannelConfigIndexParams> indexParams = reqParams.getIndexParams();
-        List<ChannelReqParamsEntity> entities = BeanCopyUtils.copyList(indexParams, ChannelReqParamsEntity.class);
-        ChannelEntity byId = channelRepository.getOne(reqParams.getId());
-        entities.forEach(e -> e.setChannel(byId));
-        saveAll(entities);
-    }
-
-    @Override
-    public List<ChannelConfigIndexParams> getChannelConfig(Long id) {
-        ChannelEntity channel = channelRepository.getOne(id);
-        List<ChannelReqParamsEntity> reqParamsEntities = new ArrayList<>(channel.getChannelReqParamsEntities());
-        return BeanCopyUtils.copyList(reqParamsEntities, ChannelConfigIndexParams.class);
-    }
-
-    @Override
-    public void updateChannelConfig(ChannelConfigReqParams reqParams) {
-        Optional<ChannelEntity> byId = channelRepository.findById(reqParams.getId());
-        Assert.mustBeTrue(byId.isPresent(), "通道不存在:" + reqParams.getId());
+    public void saveChannelConfig(Long channelId, ChannelConfigReqParams reqParams) {
+        Optional<ChannelEntity> byId = channelRepository.findById(channelId);
+        Assert.mustBeTrue(byId.isPresent(), "通道不存在:" + channelId);
         byId.get().getChannelReqParamsEntities().clear();
 
         List<ChannelConfigIndexParams> indexParams = reqParams.getIndexParams();
@@ -68,6 +52,13 @@ public class ChannelConfigServiceImpl extends AbstractHelper<ChannelReqParamsRep
 
         byId.get().getChannelReqParamsEntities().addAll(reqParamsEntities);
         channelRepository.save(byId.get());
+    }
+
+    @Override
+    public List<ChannelConfigIndexParams> getChannelConfig(Long id) {
+        ChannelEntity channel = channelRepository.getOne(id);
+        List<ChannelReqParamsEntity> reqParamsEntities = new ArrayList<>(channel.getChannelReqParamsEntities());
+        return BeanCopyUtils.copyList(reqParamsEntities, ChannelConfigIndexParams.class);
     }
 
     @Autowired

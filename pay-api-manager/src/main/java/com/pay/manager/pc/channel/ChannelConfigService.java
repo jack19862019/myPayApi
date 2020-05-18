@@ -9,9 +9,8 @@ public interface ChannelConfigService {
 
     List<ChannelConfigIndexParams> getThisReqParams();
 
-    void insertChannelConfig(ChannelConfigReqParams reqParams);
+    void saveChannelConfig(Long channelId, ChannelConfigReqParams reqParams);
 
     List<ChannelConfigIndexParams> getChannelConfig(Long id);
 
-    void updateChannelConfig(ChannelConfigReqParams reqParams);
 }

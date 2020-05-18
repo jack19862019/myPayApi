@@ -15,8 +15,4 @@ public interface McpConfigService {
     McpConfigRespParams getMcpChannels(Long merchantId);
 
     McpConfigDetailParams getMcpChannelDetail(McpQuery mcpQuery);
-
-    void putMcpAmount(Long id, Long typeId, McpAmountReqParams reqParams);
-
-    McpPayTypeParams getMcpAmount(Long merchantId, Long channelId, Long typeId);
 }
