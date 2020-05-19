@@ -2,8 +2,6 @@ package com.pay.gateway.controller.business;
 
 import com.pay.common.page.PageReqParams;
 import com.pay.common.utils.Result;
-import com.pay.data.entity.OrderEntity;
-import com.pay.manager.pc.channel.params.ChannelQuery;
 import com.pay.manager.pc.order.OrderService;
 import com.pay.manager.pc.order.params.OrderPageReqParams;
 import com.pay.manager.pc.order.params.OrderQuery;
@@ -28,7 +26,7 @@ public class OrderController {
 
     @PostMapping("send/callback")
     @ApiOperation(value = "手动回调订单")
-    public Result sendCallback(@RequestBody OrderPageReqParams reqParams){
+    public Result sendCallback(@RequestBody OrderPageReqParams reqParams) {
         orderService.sendCallback(reqParams);
         return Result.success();
     }

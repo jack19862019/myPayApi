@@ -2,18 +2,13 @@ package com.pay.gateway.controller.business;
 
 
 import com.pay.common.utils.Result;
-import com.pay.data.params.OrderReqParams;
 import com.pay.gateway.controller.AbstractController;
 import com.pay.manager.pc.channel.ChannelConfigService;
-import com.pay.manager.pc.channel.params.ChannelConfigIndexParams;
 import com.pay.manager.pc.channel.params.ChannelConfigReqParams;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api(tags = "系统-通道(各项)配置接口")
 @RestController
