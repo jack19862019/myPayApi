@@ -26,6 +26,8 @@ public class ChannelEntity extends BaseEntity {
     //支付通道标识（名称的拼音首字母）
     private String channelFlag;
 
+    private String upPayUrl;
+
     //备注
     private String remark;
 

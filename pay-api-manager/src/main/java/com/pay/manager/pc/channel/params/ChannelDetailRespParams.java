@@ -19,8 +19,7 @@ public class ChannelDetailRespParams {
 
     private String channelName;
 
-    private String remark;
+    private String upPayUrl;
 
-    @CopyCollection(targetClass = PayTypeParams.class, property = "payTypes")
-    private List<PayTypeParams> channelPayTypeParams;
+    private String remark;
 }

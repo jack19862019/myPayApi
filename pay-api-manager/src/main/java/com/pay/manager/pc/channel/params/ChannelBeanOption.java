@@ -18,7 +18,4 @@ public class ChannelBeanOption {
     private String channelFlag;
 
     private String remark;
-
-    @CopyCollection(targetClass = PayTypeEntity.class, property = "channelPayTypeParams")
-    private List<ChannelPayTypeBeanOption> payTypes = new ArrayList<>();
 }

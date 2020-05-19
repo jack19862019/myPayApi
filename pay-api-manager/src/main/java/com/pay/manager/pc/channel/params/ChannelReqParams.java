@@ -16,9 +16,8 @@ public class ChannelReqParams {
     @NotBlank(message = "通道标识不能为空")
     private String channelFlag;
 
-    private String remark;
+    @NotBlank(message = "上游支付地址不能为空")
+    private String upPayUrl;
 
-    @Valid
-    @NotEmpty(message = "该通道的支付方式必须配置")
-    private List<ChannelPayTypeParams> channelPayTypeParams;
+    private String remark;
 }
