@@ -22,8 +22,7 @@ public class ChannelController extends AbstractController {
     @SysParamsValidator
     @ApiOperation(value = "新增通道")
     public Result addChannel(@RequestBody ChannelReqParams reqParams) {
-        channelService.insert(reqParams);
-        return Result.success();
+        return Result.success(channelService.insert(reqParams));
     }
 
     @PutMapping("{id}")

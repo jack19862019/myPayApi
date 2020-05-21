@@ -1,6 +1,7 @@
 package com.pay.data.entity;
 
 import com.pay.common.enums.IsDelete;
+import com.pay.common.enums.IsSign;
 import com.pay.common.enums.IsValue;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "channel_up_req_params")
-public class ChannelReqParamsEntity extends BaseEntity {
+public class ChannelReqMapEntity extends BaseEntity {
 
     private String chineseStr;
 
@@ -26,6 +27,12 @@ public class ChannelReqParamsEntity extends BaseEntity {
     private IsValue isValue;
 
     private String pattenStr;
+
+    private IsSign isSign;
+
+    private Integer sort;
+
+    private String joinTypeStr;
 
     @ManyToOne
     private ChannelEntity channel;

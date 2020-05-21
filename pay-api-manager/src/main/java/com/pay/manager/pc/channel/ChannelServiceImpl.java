@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChannelServiceImpl extends AbstractHelper<ChannelRepository, ChannelEntity, Long> implements ChannelService {
 
     @Override
-    public void insert(ChannelReqParams reqParams) {
-        save(BeanCopyUtils.copyBean(reqParams, ChannelEntity.class, ChannelBeanOption.class));
+    public Long insert(ChannelReqParams reqParams) {
+        return save(BeanCopyUtils.copyBean(reqParams, ChannelEntity.class, ChannelBeanOption.class)).getId();
     }
 
     @Override

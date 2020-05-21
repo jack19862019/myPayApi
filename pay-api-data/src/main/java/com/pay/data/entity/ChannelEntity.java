@@ -42,7 +42,7 @@ public class ChannelEntity extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "channel_id")
-    private Set<ChannelReqParamsEntity> channelReqParamsEntities = new HashSet<>();
+    private Set<ChannelReqMapEntity> channelReqMapEntities = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "channel")
     private Set<McpConfigEntity> mcpConfigs = new HashSet<>();

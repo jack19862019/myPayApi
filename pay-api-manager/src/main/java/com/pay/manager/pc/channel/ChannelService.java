@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 
 public interface ChannelService {
 
-    void insert(ChannelReqParams reqParams);
+    Long insert(ChannelReqParams reqParams);
 
     void update(ChannelReqParams reqParams, Long id);
 
