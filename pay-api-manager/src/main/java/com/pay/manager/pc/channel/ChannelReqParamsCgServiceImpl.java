@@ -16,12 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ChannelConfigServiceImpl extends AbstractHelper<ChannelReqParamsRepository, ChannelReqParamsEntity, Long> implements ChannelConfigService {
+public class ChannelReqParamsCgServiceImpl extends AbstractHelper<ChannelReqParamsRepository, ChannelReqParamsEntity, Long> implements ChannelReqParamsCgService {
 
     @Override
     public List<ChannelConfigIndexParams> getThisReqParams() {

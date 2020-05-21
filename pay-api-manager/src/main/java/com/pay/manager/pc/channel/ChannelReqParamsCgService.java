@@ -5,7 +5,7 @@ import com.pay.manager.pc.channel.params.ChannelConfigReqParams;
 
 import java.util.List;
 
-public interface ChannelConfigService {
+public interface ChannelReqParamsCgService {
 
     List<ChannelConfigIndexParams> getThisReqParams();
 
