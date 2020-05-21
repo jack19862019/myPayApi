@@ -37,6 +37,6 @@ public class PayTypeEntity extends BaseEntity {
     @OneToMany(mappedBy = "payType")
     private Set<OrderEntity> orders;*/
 
-    @OneToMany(mappedBy = "payTypeEntity")
-    private Set<UpPayTypeEntity> upPayTypeEntitySet;
+    @OneToMany(mappedBy = "payType")
+    private Set<UpPayTypeEntity> upPayTypeEntities;
 }

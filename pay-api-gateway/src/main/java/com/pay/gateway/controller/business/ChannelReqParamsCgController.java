@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "系统-通道(各项)配置接口")
 @RestController
-@RequestMapping("/channel/config/")
+@RequestMapping("/channel/req/")
 public class ChannelReqParamsCgController extends AbstractController {
 
 
