@@ -1,16 +1,10 @@
 package com.pay.data.entity;
 
-import com.pay.common.enums.IsDelete;
-import com.pay.common.enums.IsSign;
 import com.pay.common.enums.IsValue;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -28,11 +22,11 @@ public class ChannelReqMapEntity extends BaseEntity {
 
     private String pattenStr;
 
-    private IsSign isSign;
+    /*private IsSign isSign;
 
     private Integer sort;
 
-    private String joinTypeStr;
+    private String joinTypeStr;*/
 
     @ManyToOne
     private ChannelEntity channel;

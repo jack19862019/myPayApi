@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "系统-通道(各项)配置接口")
 @RestController
-@RequestMapping("/channel/req/")
+@RequestMapping("/channel/req")
 public class ChannelReqMapController extends AbstractController {
 
 
@@ -26,7 +26,7 @@ public class ChannelReqMapController extends AbstractController {
         return Result.success(channelReqMapCgService.getThisReqParams());
     }
 
-    @PutMapping("{channelId}")
+    @PutMapping("/{channelId}")
     @ApiOperation(value = "通道入参配置修改")
     public Result saveChannelConfig(@PathVariable Long channelId, @RequestBody ChannelReqMapReqParams reqParams) {
         channelReqMapCgService.saveChannelConfig(channelId, reqParams);

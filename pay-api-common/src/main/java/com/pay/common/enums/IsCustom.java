@@ -5,16 +5,16 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum IsSign implements Serializable {
-    YES(-1, "参与签名"),
-    NO(1, "不参与签名"),
+public enum IsCustom implements Serializable {
+    DELETE(-1, "否"),
+    NORMAL(1, "自定义"),
     ;
 
 
     private Integer code;
     private String name;
 
-    IsSign(int code, String name) {
+    IsCustom(int code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -27,25 +27,25 @@ public enum IsSign implements Serializable {
         return name;
     }
 
-    private static Map<Integer, IsSign> map = new HashMap<>();
+    private static Map<Integer, IsCustom> map = new HashMap<>();
 
-    private static Map<String, IsSign> mapString = new HashMap<>();
+    private static Map<String, IsCustom> mapString = new HashMap<>();
 
 
-    public static IsSign getStatusByName(String name) {
+    public static IsCustom getStatusByName(String name) {
         if (mapString == null || mapString.isEmpty()) {
             mapString = new HashMap<>();
-            for (IsSign status : IsSign.values()) {
+            for (IsCustom status : IsCustom.values()) {
                 mapString.put(status.getName(), status);
             }
         }
         return map.get(name);
     }
 
-    public static IsSign getStatusByCode(int code) {
+    public static IsCustom getStatusByCode(int code) {
         if (map == null || map.isEmpty()) {
             map = new HashMap<>();
-            for (IsSign status : IsSign.values()) {
+            for (IsCustom status : IsCustom.values()) {
                 map.put(status.getCode(), status);
             }
         }
@@ -54,24 +54,24 @@ public enum IsSign implements Serializable {
 
 
     public static String getName(int code) {
-        IsSign type = getStatusByCode(code);
+        IsCustom type = getStatusByCode(code);
         return type == null ? "" : type.getName();
     }
 
-    public int getCode(IsSign sex) {
+    public int getCode(IsCustom sex) {
         return sex.getCode();
     }
 
 
-    public static class Convert implements AttributeConverter<IsSign, Integer> {
+    public static class Convert implements AttributeConverter<IsCustom, Integer> {
         @Override
-        public Integer convertToDatabaseColumn(IsSign attribute) {
+        public Integer convertToDatabaseColumn(IsCustom attribute) {
             return attribute == null ? null : attribute.getCode();
         }
 
         @Override
-        public IsSign convertToEntityAttribute(Integer dbData) {
-            for (IsSign type : IsSign.values()) {
+        public IsCustom convertToEntityAttribute(Integer dbData) {
+            for (IsCustom type : IsCustom.values()) {
                 if (dbData.equals(type.getCode())) {
                     return type;
                 }
