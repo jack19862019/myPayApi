@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Where(clause = "is_delete=1")
 @Table(name = "upPayType",
-        uniqueConstraints = {@UniqueConstraint(columnNames={"upPayTypeName", "upPayTypeFlag"})},
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"upPayTypeName", "upPayTypeFlag"})},
         indexes = {
                 @Index(columnList = "upPayTypeName"),
                 @Index(columnList = "upPayTypeFlag", unique = true),
@@ -25,9 +25,6 @@ public class UpPayTypeEntity extends BaseEntity {
     //支付方式 标识
     private String upPayTypeFlag;
 
-    //备注
-    private String upRemark;
-
     @ManyToOne(cascade = CascadeType.REFRESH)
     private ChannelEntity channel;
 
@@ -36,6 +33,6 @@ public class UpPayTypeEntity extends BaseEntity {
 
     //平台支付方式ID
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "payTypeFlag",referencedColumnName = "payTypeFlag")
+    @JoinColumn(name = "payTypeFlag", referencedColumnName = "payTypeFlag")
     private PayTypeEntity payType;
 }

@@ -37,16 +37,8 @@ public class ChannelEntity extends BaseEntity {
     private Set<ChannelContactEntity> contacts = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "channel_id")
-    private Set<ChannelSignConfigEntity> channelSignConfigEntities = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "channelFlag", referencedColumnName = "channelFlag")
     private Set<UpPayTypeEntity> upPayTypes = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "channel_id")
-    private Set<ChannelReqMapEntity> channelReqMapEntities = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "channel")
     private Set<McpConfigEntity> mcpConfigs = new HashSet<>();

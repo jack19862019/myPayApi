@@ -2,10 +2,7 @@ package com.pay.manager.pc.channel.params;
 
 import lombok.Data;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Data
 public class ChannelReqParams {
@@ -20,4 +17,6 @@ public class ChannelReqParams {
     private String upPayUrl;
 
     private String remark;
+
+
 }
