@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,9 +41,8 @@ public class OrderEntity extends BaseEntity {
     private String upMerchantNo;
 
     //上游支付方式对象
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "upPayTypeFlag", referencedColumnName = "upPayTypeFlag")
-    private UpPayTypeEntity upPayType;
+    @ManyToMany(mappedBy = "orders")
+    private Set<UpPayTypeEntity> upPayTypeEntities;
 
     //订单金额
     private BigDecimal orderAmount;

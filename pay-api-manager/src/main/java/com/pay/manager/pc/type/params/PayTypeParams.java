@@ -1,10 +1,13 @@
 package com.pay.manager.pc.type.params;
 
+import com.pay.data.entity.PayTypeEntity;
+import com.tuyang.beanutils.annotation.BeanCopySource;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
+@BeanCopySource(source = PayTypeEntity.class)
 public class PayTypeParams {
 
     private Long id;

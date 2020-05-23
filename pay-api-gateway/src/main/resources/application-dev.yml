@@ -48,6 +48,3 @@ jwt:
   expiration: 864000000
 server:
   port: 10086
-
-mybatis:
-  mapper-locations: classpath:mapping/*Mapper.xml

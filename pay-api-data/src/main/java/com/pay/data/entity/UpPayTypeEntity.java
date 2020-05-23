@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -12,10 +13,9 @@ import java.util.Set;
 @Entity
 @Where(clause = "is_delete=1")
 @Table(name = "upPayType",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"upPayTypeName", "upPayTypeFlag"})},
         indexes = {
                 @Index(columnList = "upPayTypeName"),
-                @Index(columnList = "upPayTypeFlag", unique = true),
+                @Index(columnList = "upPayTypeFlag"),
         })
 public class UpPayTypeEntity extends BaseEntity {
 
@@ -28,11 +28,15 @@ public class UpPayTypeEntity extends BaseEntity {
     @ManyToOne(cascade = CascadeType.REFRESH)
     private ChannelEntity channel;
 
-    @OneToMany(mappedBy = "upPayType")
-    private Set<OrderEntity> orders;
+    @ManyToMany
+    @JoinTable(name = "z_order_pay_type",
+            joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "up_pay_type_id", referencedColumnName = "id")}
+    )
+    private Set<OrderEntity> orders = new HashSet<>();
 
     //平台支付方式ID
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "payTypeFlag", referencedColumnName = "payTypeFlag")
+    @JoinColumn(name = "payTypeId", referencedColumnName = "id")
     private PayTypeEntity payType;
 }

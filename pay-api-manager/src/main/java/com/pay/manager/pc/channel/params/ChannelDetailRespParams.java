@@ -1,8 +1,7 @@
 package com.pay.manager.pc.channel.params;
 
 import com.pay.data.entity.ChannelEntity;
-import com.pay.manager.pc.contact.ContactParams;
-import com.pay.manager.pc.type.params.PayTypeParams;
+import com.pay.data.entity.UpPayTypeEntity;
 import com.tuyang.beanutils.annotation.BeanCopySource;
 import com.tuyang.beanutils.annotation.CopyCollection;
 import lombok.Data;
@@ -22,4 +21,7 @@ public class ChannelDetailRespParams {
     private String upPayUrl;
 
     private String remark;
+
+    @CopyCollection(targetClass = ChannelPayTypeRespParams.class, property = "upPayTypes")
+    private List<ChannelPayTypeRespParams> upPayTypes;
 }
