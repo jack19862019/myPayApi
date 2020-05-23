@@ -28,11 +28,7 @@ public class UpPayTypeEntity extends BaseEntity {
     @ManyToOne(cascade = CascadeType.REFRESH)
     private ChannelEntity channel;
 
-    @ManyToMany
-    @JoinTable(name = "z_order_pay_type",
-            joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "up_pay_type_id", referencedColumnName = "id")}
-    )
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "upPayType")
     private Set<OrderEntity> orders = new HashSet<>();
 
     //平台支付方式ID

@@ -41,8 +41,9 @@ public class OrderEntity extends BaseEntity {
     private String upMerchantNo;
 
     //上游支付方式对象
-    @ManyToMany(mappedBy = "orders")
-    private Set<UpPayTypeEntity> upPayTypeEntities;
+    @ManyToOne
+    @JoinColumn(name = "up_pay_type_id", referencedColumnName = "id")
+    private UpPayTypeEntity upPayType;
 
     //订单金额
     private BigDecimal orderAmount;
