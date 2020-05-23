@@ -40,7 +40,7 @@ public class ChannelPayTypeServiceImpl extends AbstractHelper<UpPayTypeRepositor
         for (ChannelPayTypeParams payTypeParams : reqParamsList) {
             Long payTypeId = payTypeParams.getPayTypeId();
             Optional<PayTypeEntity> payType = payTypeRepository.findById(payTypeId);
-            Assert.mustBeTrue(payType.isPresent(), "支付方式不存在");
+            Assert.mustBeTrue(payType.isPresent(), "平台支付方式不存在");
 
             UpPayTypeEntity upPayTypeEntity = BeanCopyUtils.copyBean(payTypeParams, UpPayTypeEntity.class);
             upPayTypeEntity.setPayType(payType.get());

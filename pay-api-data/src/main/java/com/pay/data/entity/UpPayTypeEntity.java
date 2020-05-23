@@ -33,6 +33,6 @@ public class UpPayTypeEntity extends BaseEntity {
 
     //平台支付方式ID
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "payTypeId", referencedColumnName = "id")
+    @JoinColumn(name = "payTypeFlag", referencedColumnName = "payTypeFlag")
     private PayTypeEntity payType;
 }

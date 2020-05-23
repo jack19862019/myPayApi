@@ -9,6 +9,4 @@ public class UpPayTypeReqParams {
 
     private String upPayTypeFlag;
 
-    private Long payTypeId;
-
 }

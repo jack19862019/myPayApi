@@ -21,14 +21,6 @@ public class ChannelPayTypeController extends AbstractController {
     @Autowired
     ChannelPayTypeService channelPayTypeService;
 
-    @PostMapping("/{channelId}")
-    @SysParamsValidator
-    @ApiOperation(value = "新增通道支付方式")
-    public Result addChannelType(@PathVariable Long channelId, @RequestBody List<ChannelPayTypeParams> reqParamsList) {
-        channelPayTypeService.insert(channelId, reqParamsList);
-        return Result.success();
-    }
-
     @PutMapping("/{channelId}")
     @SysParamsValidator
     @ApiOperation(value = "修改通道支付方式")
