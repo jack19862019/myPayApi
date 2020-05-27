@@ -1,0 +1,28 @@
+server:
+  tomcat:
+    uriEncoding: UTF-8
+  port: 10086
+  servlet:
+    context-path: /pay
+
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mysql://localhost:3306/payApi?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    minimum-idle: 5  # 最小空闲连接数量
+    idle-timeout: 180000 # 空闲连接存活最大时间，默认600000（10分钟）
+    maximum-pool-size: 10 # 连接池最大连接数,默认是10
+    auto-commit: true # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+    pool-name: MyHikariCP # 连接池名称
+    max-lifetime: 1800000 # 此属性控制池中连接的最长生命周期,值0表示无限生命周期,默认1800000即30分钟
+    connection-timeout: 30000 # 数据库连接超时时间,默认30秒,即30000
+  jpa:
+    show-sql: false
+test:
+  callback: http://47.56.19.236:10086/pay/callback
+platform:
+  domain: http://47.56.19.236:10086
+logging:
+  config: classpath:log4j2.xml
