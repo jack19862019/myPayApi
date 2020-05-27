@@ -34,6 +34,7 @@ public class McpConfigEntity extends BaseEntity {
     @JoinColumn(name = "merchant_id")
     private MerchantEntity merchant;
 
-    /*    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mcpConfig", orphanRemoval = true)
-    private Set<McpPayTypeEntity> mcpPayType = new HashSet<>();*/
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "mcp_config_id")
+    private Set<McpPayTypeEntity> mcpPayType = new HashSet<>();
 }

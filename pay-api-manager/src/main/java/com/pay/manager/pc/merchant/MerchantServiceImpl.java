@@ -54,7 +54,7 @@ public class MerchantServiceImpl extends AbstractHelper<MerchantRepository, Merc
 
         List<SysConfigEntity> all = sysConfigRepository.findAll();
         Assert.mustBeTrue(!CollectionUtils.isEmpty(all), "请检查平台配置");
-        userEntity.setPassword(all.get(0).getInitPassword());
+        userEntity.setPassword(passwordEncoder.encode(all.get(0).getInitPassword()));
         userEntity.setPhone(Constant.DEFAULT_PHONE);
         userEntity.setEmail(Constant.DEFAULT_EMAIL);
         userEntity.setRole(sysRole);

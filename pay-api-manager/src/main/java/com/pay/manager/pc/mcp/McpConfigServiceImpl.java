@@ -1,13 +1,8 @@
 package com.pay.manager.pc.mcp;
 
 import com.pay.common.exception.Assert;
-import com.pay.data.entity.ChannelEntity;
-import com.pay.data.entity.McpConfigEntity;
-import com.pay.data.entity.MerchantEntity;
-import com.pay.data.mapper.ChannelRepository;
-import com.pay.data.mapper.McpConfigRepository;
-import com.pay.data.mapper.MerchantRepository;
-import com.pay.data.mapper.PayTypeRepository;
+import com.pay.data.entity.*;
+import com.pay.data.mapper.*;
 import com.pay.data.supper.AbstractHelper;
 import com.pay.manager.pc.mcp.params.*;
 import com.tuyang.beanutils.BeanCopyUtils;
@@ -16,9 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,13 +20,9 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
 
     @Override
     public void insert(McpConfigReqParams reqParams) {
-        List<Long> mcpPayTypeIds = reqParams.getMcpPayTypeIds();
         Long channelId = reqParams.getChannelId();
         Optional<ChannelEntity> byId = channelRepository.findById(channelId);
         Assert.mustBeTrue(byId.isPresent(), "通道不存在");
-        //List<Long> alreadyIds = byId.get().getPayTypes().stream().map(PayTypeEntity::getId).collect(toList());
-        //List<Long> reduceIds = mcpPayTypeIds.stream().filter(item -> !alreadyIds.contains(item)).collect(toList());
-        //Assert.mustBeTrue(CollectionUtils.isEmpty(reduceIds), reduceIds + "支付方式不存在通道:" + channelId + "中");
         McpConfigEntity mcpConfigEntity = BeanCopyUtils.copyBean(reqParams, McpConfigEntity.class, McpConfigOption.class);
         insertMcpBusiness(mcpConfigEntity, reqParams);
     }
@@ -90,9 +79,30 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
 
         mcpConfigEntity.setMerchant(merchant);
         mcpConfigEntity.setChannel(channel);
-
         mcpConfigEntity.setCreateUser(merchant.getMerchantNo());
+
+        mcpConfigEntity.getMcpPayType().clear();
+        mcpConfigEntity.getMcpPayType().addAll(buildMcpPayType(mcpConfigEntity, reqParams));
+
         save(mcpConfigEntity);
+    }
+
+    private Set<McpPayTypeEntity> buildMcpPayType(McpConfigEntity mcpConfigEntity, McpConfigReqParams reqParams) {
+        Optional<ChannelEntity> byId = channelRepository.findById(reqParams.getChannelId());
+        Assert.mustBeTrue(byId.isPresent(), "通道不存在");
+        Set<UpPayTypeEntity> upPayTypes = byId.get().getUpPayTypes();
+
+        Set<McpPayTypeEntity> mcpPayTypeEntities = new HashSet<>();
+        for (UpPayTypeEntity upPayType : upPayTypes){
+            PayTypeEntity payType = upPayType.getPayType();
+            if (reqParams.getMcpPayTypeIds().contains(payType.getId())){
+                McpPayTypeEntity mcpPayTypeEntity = new McpPayTypeEntity();
+                mcpPayTypeEntity.setUpPayType(upPayType);
+                mcpPayTypeEntity.setMcpConfig(mcpConfigEntity);
+                mcpPayTypeEntities.add(mcpPayTypeEntity);
+            }
+        }
+        return mcpPayTypeEntities;
     }
 
     private MerchantEntity getMerchant(Long merchantId) {
@@ -118,4 +128,7 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
 
     @Autowired
     McpConfigRepository mcpConfigRepository;
+
+    @Autowired
+    McpPayTypeRepository mcpPayTypeRepository;
 }

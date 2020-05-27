@@ -1,9 +1,14 @@
 package com.pay.manager.pc.type.params;
 
+import com.pay.data.entity.PayTypeEntity;
+import com.tuyang.beanutils.annotation.BeanCopySource;
 import lombok.Data;
 
 @Data
+@BeanCopySource(source = PayTypeEntity.class)
 public class PayTypeRespParams {
+
+    private Long id;
 
     //支付方式名称
     private String payTypeName;

@@ -35,4 +35,7 @@ public class UpPayTypeEntity extends BaseEntity {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "payTypeFlag", referencedColumnName = "payTypeFlag")
     private PayTypeEntity payType;
+
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "upPayType")
+    private Set<McpPayTypeEntity> mcpPayTypeEntities;
 }

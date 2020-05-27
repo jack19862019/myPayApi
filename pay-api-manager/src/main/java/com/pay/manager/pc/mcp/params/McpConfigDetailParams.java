@@ -26,4 +26,7 @@ public class McpConfigDetailParams {
     private EncryptionType encryptionType;
 
     private String upKey;
+
+    @CopyCollection(targetClass = McpPayTypeParams.class, property = "mcpPayType")
+    private List<McpPayTypeParams> mcpPayTypeParams;
 }
