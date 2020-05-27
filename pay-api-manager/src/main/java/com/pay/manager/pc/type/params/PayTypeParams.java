@@ -1,20 +1,21 @@
 package com.pay.manager.pc.type.params;
 
-import com.pay.data.entity.UpPayTypeEntity;
+import com.pay.data.entity.PayTypeEntity;
 import com.tuyang.beanutils.annotation.BeanCopySource;
-import com.tuyang.beanutils.annotation.CopyProperty;
 import lombok.Data;
 
 @Data
-@BeanCopySource(source = UpPayTypeEntity.class)
+@BeanCopySource(source = PayTypeEntity.class)
 public class PayTypeParams {
 
     private Long id;
 
-    private String upPayTypeName;
+    //支付方式名称
+    private String payTypeName;
 
-    private String upPayTypeFlag;
+    //支付方式 标识
+    private String payTypeFlag;
 
-    @CopyProperty(property = "payType")
-    private PayTypeRespParams payTypeRespParams;
+    //备注
+    private String remark;
 }
