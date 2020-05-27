@@ -1,22 +1,18 @@
 package com.pay.rmi.paythird.kuailefu;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.mysema.commons.lang.URLEncoder;
 import com.pay.common.enums.OrderStatus;
 import com.pay.common.utils.api.Md5Utils;
 import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.MerchantEntity;
 import com.pay.data.entity.OrderEntity;
-import com.pay.data.params.OrderReqParams;
+import com.pay.rmi.api.req.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.common.exception.RException;
 import com.pay.rmi.common.utils.LogByMDC;
 import com.pay.rmi.common.utils.SignUtils;
 import com.pay.rmi.pay.constenum.OutChannel;
 import com.pay.rmi.paythird.AbstractPay;
-import com.tuyang.beanutils.BeanCopyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -48,7 +44,7 @@ public class KuaiLeFu extends AbstractPay {
 
     @Override
     public OrderApiRespParams order(ChannelEntity channel, MerchantEntity merchant, McpConfigEntity mcpConfig, OrderReqParams reqParams) {
-        LogByMDC.info(channelNo, "快乐付支付请求：{}", JSON.toJSONString(reqParams));
+        /*LogByMDC.info(channelNo, "快乐付支付请求：{}", JSON.toJSONString(reqParams));
 
         Map<String, String> params = getParamsMap(mcpConfig, reqParams);
         Map<String, String> head = new HashMap<String, String>();
@@ -75,11 +71,19 @@ public class KuaiLeFu extends AbstractPay {
         if (resultMap1.get("PayHtml") != null && !resultMap1.get("PayHtml").equals("")) {
             LogByMDC.info(channelNo, "快乐付支付请求响应html：{}", resultMap1.get("PayHtml"));
             orderApiRespParams.setPay_form(resultMap1.get("PayHtml"));
-        }
+        }*/
+
+        Map<String, String> params = getParamsMap(mcpConfig, reqParams);
+
+
+        OrderApiRespParams orderApiRespParams = new OrderApiRespParams();
+        orderApiRespParams.setAmount("1111");
+        orderApiRespParams.setMerchNo("222222");
+        orderApiRespParams.setOrderNo("33333333");
         return orderApiRespParams;
     }
 
-    private Map<String, String> getParamsMap(McpConfigEntity mcpConfig, OrderReqParams reqParams) {
+    Map<String, String> getParamsMap(McpConfigEntity mcpConfig, OrderReqParams reqParams) {
         String upMerchantNo = mcpConfig.getUpMerchantNo();
         String upPublicKey = mcpConfig.getUpKey();
         String payType = payTypeMap.get(reqParams.getOutChannel());
