@@ -70,7 +70,15 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
         getChannel(mcpQuery.getChannelId());//只做检查
         List<McpConfigEntity> mcp = getList(mcpQuery, new Sort(Sort.Direction.DESC, "merchant_id"));
         Assert.mustBeTrue(!CollectionUtils.isEmpty(mcp) && mcp.size() == 1, "商户通道配置有且只有一个");
-        return BeanCopyUtils.copyBean(mcp.get(0), McpConfigDetailParams.class);
+        McpConfigDetailParams params = new McpConfigDetailParams();
+        params.setChannelParams(BeanCopyUtils.copyBean(mcp.get(0).getChannel(), McpChannelParams.class));
+        params.setMerchantParams(BeanCopyUtils.copyBean(mcp.get(0).getMerchant(), McpMerchantParams.class));
+        params.setEncryptionType(mcp.get(0).getEncryptionType());
+        params.setId(mcp.get(0).getId());
+        params.setUpKey(mcp.get(0).getUpKey());
+        List<McpPayTypeEntity> mcpPayType = new ArrayList<>(mcp.get(0).getMcpPayType());
+        params.setMcpPayTypeParams(BeanCopyUtils.copyList(mcpPayType, McpPayTypeParams.class));
+        return params;
     }
 
     private void insertMcpBusiness(McpConfigEntity mcpConfigEntity, McpConfigReqParams reqParams) {
