@@ -52,7 +52,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     }
 
 
-    @Override
+    /*@Override
     public Page<OrderListResp> selectByFlagAndOrderNo(String orderNo, String pageSize, String pageNum) {
         Sort reqTime = new Sort(Sort.Direction.DESC, "reqTime");
         Pageable pageRequest = new PageRequest(Integer.parseInt(pageNum), Integer.parseInt(pageSize), reqTime);
@@ -64,7 +64,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 .withMatcher("orderNo", ExampleMatcher.GenericPropertyMatchers.contains());
         Example<OrderEntity> example = Example.of(orderEntity, matcher);
         return orderRepository.findAll(example, pageRequest).map(this::toMerchantName);
-    }
+    }*/
 
     private OrderListResp toMerchantName(OrderEntity orderEntity) {
         OrderListResp resp = new OrderListResp();
