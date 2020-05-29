@@ -13,7 +13,7 @@ public interface PayService {
 
     OrderApiRespParams order(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams);
 
-    String callback(OrderEntity order, Map<String, String> params);
+    String callback(OrderEntity order,  McpConfigEntity mcpConfig, Map<String, String> params);
 
 
 }

@@ -35,16 +35,16 @@ public abstract class AbstractPay implements PayService {
 
     protected OrderEntity order;
 
+    @Autowired
+    protected NotifyTask notifyTask;
+
+
     //========================================华丽得分割线=======================================================================
 
     protected void initReqOrder(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams){
         this.channelEntity = channel;
         this.mcpConfig = mcpConfig;
         this.reqParams = reqParams;
-    }
-
-    protected void initCallBack(OrderEntity orderEntity){
-        this.order = orderEntity;
     }
 
     protected abstract Map<String, String> requestToUpParams();
@@ -55,6 +55,15 @@ public abstract class AbstractPay implements PayService {
 
     protected abstract OrderApiRespParams returnRespToDown(String result);
 
+    //========================================华丽得分割线=======================================================================
+    protected void initCallBack(OrderEntity orderEntity,McpConfigEntity mcpConfig){
+        this.order = orderEntity;
+        this.mcpConfig = mcpConfig;
+    }
+
+    protected abstract boolean verifySignParams(Map<String, String> params);
+
+    protected abstract String updateOrder(Map<String, String> params);
 
     protected String getCallbackUrl(String channelNo, String merchantNo, String orderNo) {
         return domain + contextPath + "/callback/" + channelNo + "/" + merchantNo + "/" + orderNo;

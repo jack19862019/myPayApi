@@ -3,6 +3,7 @@ package com.pay.rmi.paythird.kuailefu;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.mysema.commons.lang.URLEncoder;
+import com.pay.common.enums.OrderStatus;
 import com.pay.common.exception.Assert;
 import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
@@ -10,6 +11,7 @@ import com.pay.data.entity.OrderEntity;
 import com.pay.data.entity.UpPayTypeEntity;
 import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
+import com.pay.rmi.common.exception.RException;
 import com.pay.rmi.common.utils.LogByMDC;
 import com.pay.rmi.paythird.AbstractPay;
 import com.tuyang.beanutils.BeanCopyUtils;
@@ -37,9 +39,14 @@ public class KuaiLeFu extends AbstractPay {
     }
 
     @Override
-    public String callback(OrderEntity order, Map<String, String> params) {
-        initCallBack(order);
-        return null;
+    public String callback(OrderEntity order,  McpConfigEntity mcpConfig ,Map<String, String> params) {
+        initCallBack(order,mcpConfig);
+        if (order.getOrderStatus() == OrderStatus.succ) {
+            return "SUCCESS";
+        }
+        boolean signVerify = verifySignParams(params);
+        Assert.mustBeTrue(signVerify,"验签失败！");
+        return updateOrder(params);
     }
 
     @Override
@@ -106,6 +113,37 @@ public class KuaiLeFu extends AbstractPay {
         return orderApiRespParams;
     }
 
+    @Override
+    protected boolean verifySignParams(Map<String, String> params) {
+        Map<String, String> treeMap = new TreeMap<>(params);
+        String sign = treeMap.remove("sign");
+        String signStr = formatSignData(params);
+        String newSign = PayMD5.MD5Encode(signStr + mcpConfig.getUpKey()).toLowerCase();
+        return newSign.equals(sign);
+    }
+
+    @Override
+    protected String updateOrder(Map<String, String> params) {
+        String trade_no = params.get("orderNo");
+        String trade_status = params.get("status");
+        String amount = params.get("bizAmt");
+
+        if (!"1".equals(trade_status)) {
+            return "SUCCESS";
+        }
+
+        order.setOrderStatus(OrderStatus.succ);
+        order.setRealAmount(new BigDecimal(amount));
+        order.setBusinessNo(trade_no);
+        orderService.update(order);
+        //通知下游
+        try {
+            notifyTask.put(order);
+        } catch (Exception e) {
+            throw new RException("下发通知报错:" + e.getMessage());
+        }
+        return"SUCCESS";
+    }
 
 
     private static String formatSignData(Map<String, String> signDataMap) {
