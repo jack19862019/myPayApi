@@ -7,8 +7,8 @@ import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.MerchantEntity;
 import com.pay.data.entity.OrderEntity;
-import com.pay.rmi.api.req.OrderApiParams;
 import com.pay.data.params.OrderReqParams;
+import com.pay.rmi.api.req.OrderApiParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.common.exception.RException;
 import com.pay.rmi.common.utils.DateUtil;
@@ -102,7 +102,7 @@ public class Api {
     }
 
     @RequestMapping("localhost/test/call/back")
-    public String acceptCallBack(){
+    public String acceptCallBack() {
         log.info(">>>>>>>>>>>>>>>>>>>>>>>异步回调成功");
         return "异步回调成功!";
     }
@@ -111,7 +111,7 @@ public class Api {
     public String callback(@PathVariable String channelNo, @PathVariable String merchantNo, @PathVariable String orderNo, HttpServletRequest request) throws UnsupportedEncodingException {
         long startThird = System.currentTimeMillis();
         String startThirdStr = DateUtil.parseTimeSecStrSSS(startThird);
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>回调信息开始{},请求头:",startThirdStr, request.getContentType());
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>回调信息开始{},请求头:", startThirdStr, request.getContentType());
         Map<String, String> params;
         if (!ObjectUtils.isEmpty(request.getContentType()) && request.getContentType().contains(MediaType.APPLICATION_XML_VALUE)) {
             String xmlContent = MapToXml.getRequestBody(request);
@@ -129,9 +129,9 @@ public class Api {
         }
         ChannelEntity channel = channelService.selectByChannelNo(channelNo);
         //MerchantEntity merchant = merchantService.selectByMerchantNo(merchantNo);
-        //McpConfigEntity mcpConfig = merchantChannelService.selectByMerchantNoAndChannelNo(merchantNo, channelNo);
+        McpConfigEntity mcpConfig = merchantChannelService.selectByMerchantNoAndChannelNo(merchantNo, channelNo);
         PayService payService = payServiceFactory.getService(channel.getChannelFlag());
-        return payService.callback(order, params);
+        return payService.callback(order, mcpConfig, params);
     }
 
 
