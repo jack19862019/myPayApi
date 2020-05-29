@@ -74,6 +74,7 @@ public class McpConfigServiceImpl extends AbstractHelper<McpConfigRepository, Mc
         params.setChannelParams(BeanCopyUtils.copyBean(mcp.get(0).getChannel(), McpChannelParams.class));
         params.setMerchantParams(BeanCopyUtils.copyBean(mcp.get(0).getMerchant(), McpMerchantParams.class));
         params.setEncryptionType(mcp.get(0).getEncryptionType());
+        params.setUpMerchantNo(mcp.get(0).getUpMerchantNo());
         params.setId(mcp.get(0).getId());
         params.setUpKey(mcp.get(0).getUpKey());
         List<McpPayTypeEntity> mcpPayType = new ArrayList<>(mcp.get(0).getMcpPayType());
