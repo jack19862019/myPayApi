@@ -128,10 +128,10 @@ public class Api {
             return "您回调的订单不存在,由于支付请求时，响应状态失败或支付请求超时未处理。您可以忽略此订单";
         }
         ChannelEntity channel = channelService.selectByChannelNo(channelNo);
-        MerchantEntity merchant = merchantService.selectByMerchantNo(merchantNo);
-        McpConfigEntity mcpConfig = merchantChannelService.selectByMerchantNoAndChannelNo(merchantNo, channelNo);
+        //MerchantEntity merchant = merchantService.selectByMerchantNo(merchantNo);
+        //McpConfigEntity mcpConfig = merchantChannelService.selectByMerchantNoAndChannelNo(merchantNo, channelNo);
         PayService payService = payServiceFactory.getService(channel.getChannelFlag());
-        return payService.callback(channel, merchant, mcpConfig, order, params);
+        return payService.callback(order, params);
     }
 
 

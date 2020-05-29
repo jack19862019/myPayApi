@@ -13,15 +13,7 @@ public interface PayService {
 
     OrderApiRespParams order(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams);
 
-    Map<String, String> requestToUpParams(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams);
-
-    String signToUp(String context);
-
-    String httpRequestUp(String payUrl, Map<String, String> requestToUpParams);
-
-    OrderApiRespParams returnRespToDown(String result);
-
-    String callback(ChannelEntity channel, MerchantEntity merchant, McpConfigEntity mcpConfig, OrderEntity order, Map<String, String> params);
+    String callback(OrderEntity order, Map<String, String> params);
 
 
 }

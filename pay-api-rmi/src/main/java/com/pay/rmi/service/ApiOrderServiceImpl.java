@@ -27,12 +27,12 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     }
 
     @Override
-    public OrderEntity save(OrderEntity order) {
-        return orderRepository.save(order);
+    public void save(OrderEntity order) {
+        orderRepository.save(order);
     }
 
     @Override
-    public OrderEntity update(OrderEntity order) {
+    public void update(OrderEntity order) {
         //判断realAmount和orderAmount是不是差距太大
         BigDecimal orderAmount = order.getOrderAmount();
         BigDecimal realAmount = order.getRealAmount();
@@ -43,7 +43,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
                 rate(orderAmount, realAmount).compareTo(new BigDecimal(0.05)) < 0,
                 "订单金额与实际金额差距太大，请查看"
         );
-        return orderRepository.save(order);
+        orderRepository.save(order);
     }
 
     private static BigDecimal rate(BigDecimal orderAmount, BigDecimal realAmount) {
