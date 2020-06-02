@@ -22,7 +22,7 @@ public class RmiSignAspect extends BaseAspect {
 
     @Before("logSignToUp()")
     public void logSignToUp(JoinPoint pjd) {
-        String orderNo = map.get("orderNo");
+        String string = map.get(orderNo).toString();
         System.out.println("******************************************" + orderNo);
     }
 

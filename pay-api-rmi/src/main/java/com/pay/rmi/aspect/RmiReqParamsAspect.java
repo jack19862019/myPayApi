@@ -42,7 +42,7 @@ public class RmiReqParamsAspect extends BaseAspect {
         StackTraceElement stackTraceElement= ex.getStackTrace()[0];
         String className = stackTraceElement.getClassName();
         String lineNumber = String.valueOf(stackTraceElement.getLineNumber());
-        map.put(cStr, className + lineNumber + "行:" + ex);
+        map.put(cStr, className + lineNumber + "行: " + ex);
         map.put(isValue, IsValue.BC);
         savePayLog();
     }

@@ -24,6 +24,13 @@ public class BaseAspect {
     private PayLogService payLogService;
 
     protected void savePayLog() {
-        payLogService.insertPayOrderLog(isValue, methodName, orderNo, channelNo, rStr, cStr, optionUser);
+        payLogService.insertPayOrderLog(
+                IsValue.getStatusByCode(((IsValue)map.get(isValue)).getCode()),
+                map.get(methodName).toString(),
+                map.get(orderNo).toString(),
+                map.get(channelNo).toString(),
+                map.get(rStr).toString(),
+                map.get(cStr).toString(),
+                map.get(optionUser).toString());
     }
 }
