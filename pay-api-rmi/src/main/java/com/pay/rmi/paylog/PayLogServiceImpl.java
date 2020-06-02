@@ -1,5 +1,6 @@
 package com.pay.rmi.paylog;
 
+import com.pay.common.enums.IsValue;
 import com.pay.data.entity.PayLogEntity;
 import com.pay.data.mapper.ChannelRepository;
 import com.pay.data.mapper.PayLogRepository;
@@ -17,23 +18,21 @@ public class PayLogServiceImpl extends AbstractHelper<PayLogRepository, PayLogEn
     @Autowired
     PayLogRepository payLogRepository;
 
-    @Autowired
-    ChannelRepository channelRepository;
 
     @Override
-    public void insert(String name, String msg,  Object... arguments) {
-        PayLogEntity payLogEntity=new PayLogEntity();
-        channelRepository.findByChannelFlag(name);
-        payLogEntity.setChannelName(channelRepository.findByChannelFlag(name).getChannelName());
-        String[] sArray=msg.split("\\{");
-        String newMsg=sArray[0]+"{";
-        for(int i=0;i<arguments.length;i++){
-            newMsg=newMsg+arguments[i]+sArray[i+1];
-        }
-        payLogEntity.setLogContent(newMsg);
-        payLogEntity.setChannelFlag(name);
-        payLogEntity.setCreateTime(new Date());
-        payLogRepository.save(payLogEntity);
-    }
+    public void insertPayOrderLog(IsValue isValue, String... args) {
+        PayLogEntity payLog = new PayLogEntity();
+        payLog.setIsValue(isValue);
+        payLog.setMethod(args[0]);
+        payLog.setOrderNo(args[1]);
+        payLog.setChannelFlag(args[2]);
+        payLog.setRGinseng(args[3]);
+        payLog.setCGinseng(args[4]);
 
+        payLog.setCreateUser(args[5]);
+        payLog.setCreateTime(new Date());
+        payLog.setUpdateUser(args[5]);
+        payLog.setUpdateTime(new Date());
+        payLogRepository.save(payLog);
+    }
 }

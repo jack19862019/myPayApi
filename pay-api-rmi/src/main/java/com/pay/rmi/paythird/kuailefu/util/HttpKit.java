@@ -1,4 +1,4 @@
-package com.pay.rmi.paythird.kuailefu;
+package com.pay.rmi.paythird.kuailefu.util;
 
 import javax.net.ssl.*;
 import java.io.*;

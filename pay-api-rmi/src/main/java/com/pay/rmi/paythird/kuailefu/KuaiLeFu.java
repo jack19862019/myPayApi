@@ -1,93 +1,58 @@
 package com.pay.rmi.paythird.kuailefu;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.mysema.commons.lang.URLEncoder;
 import com.pay.common.enums.OrderStatus;
-import com.pay.common.exception.Assert;
 import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.OrderEntity;
-import com.pay.data.entity.UpPayTypeEntity;
 import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
-import com.pay.rmi.common.exception.RException;
-import com.pay.rmi.common.utils.LogByMDC;
 import com.pay.rmi.paythird.AbstractPay;
-import com.tuyang.beanutils.BeanCopyUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.pay.rmi.paythird.PayService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * 快乐付
  */
 @Service(KuaiLeFu.channelNo)
-public class KuaiLeFu extends AbstractPay {
+public class KuaiLeFu extends AbstractPay implements PayService {
 
     static final String channelNo = "kuailefu";
 
+    @Autowired
+    ReqParamsBuilder reqParamsBuilder;
+
+    @Autowired
+    SignBuilder signBuilder;
+
+    @Autowired
+    HttpReqHelper httpReqHelper;
+
     @Override
-    public OrderApiRespParams order(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams) {
-        initReqOrder(channel, mcpConfig, reqParams);
-        Map<String, String> map = requestToUpParams();
-        String result = httpRequestToUp(channel.getUpPayUrl(), map);
-        return returnRespToDown(result);
+    public OrderApiRespParams orderBusiness(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams) {
+        String callbackUrl = getCallbackUrl(channelNo, reqParams.getMerchNo(), reqParams.getOrderNo());
+        Map<String, String> map = reqParamsBuilder.requestToUpParams(channel, mcpConfig, reqParams, callbackUrl);
+        String signStr = SignBuilder.formatSignData(map);
+        String sign = signBuilder.signToUp(signStr, mcpConfig.getUpKey());
+        map.put("sign", sign);
+        String result = httpReqHelper.httpRequestToUp(channel.getUpPayUrl(), map);
+        return null;//returnRespToDown(result);
     }
 
     @Override
-    public String callback(OrderEntity order,  McpConfigEntity mcpConfig ,Map<String, String> params) {
-        initCallBack(order,mcpConfig);
+    public String callback(OrderEntity order, McpConfigEntity mcpConfig, Map<String, String> params) {
         if (order.getOrderStatus() == OrderStatus.succ) {
             return "SUCCESS";
         }
-        boolean signVerify = verifySignParams(params);
-        Assert.mustBeTrue(signVerify,"验签失败！");
-        return updateOrder(params);
+        /*boolean signVerify = verifySignParams(params);
+        Assert.mustBeTrue(signVerify, "验签失败！");
+        return updateOrder(params);*/
+        return null;
     }
 
-    @Override
-    protected Map<String, String> requestToUpParams() {
-
-        Optional<UpPayTypeEntity> upPayTypeEntity = channelEntity.getUpPayTypes().stream()
-                .filter(e -> e.getPayType().getPayTypeFlag().equals(reqParams.getOutChannel())).findFirst();
-        Assert.mustBeTrue(upPayTypeEntity.isPresent(), "快乐付不支持的支付方式:" + reqParams.getOutChannel());
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("merchantNo", mcpConfig.getUpMerchantNo());
-        params.put("version", "V2");
-        params.put("signType", "MD5");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        params.put("date", formatter.format(new Date()));
-        params.put("channleType", upPayTypeEntity.get().getUpPayTypeFlag());
-        params.put("orderNo", reqParams.getOrderNo());
-        params.put("bizAmt", new BigDecimal(reqParams.getAmount()) + "");
-        params.put("noticeUrl", getCallbackUrl(channelNo, reqParams.getMerchNo(), reqParams.getOrderNo()));
-        params.put("accName", "张三");
-        params.put("cardNo", "6230520080090842211");
-
-        String signStr = formatSignData(params);
-        params.put("sign", signToUp(signStr));
-        return params;
-    }
-
-    @Override
-    protected String signToUp(String context) {
-        return PayMD5.MD5Encode(context + mcpConfig.getUpKey()).toLowerCase();
-    }
-
-    @Override
-    protected String httpRequestToUp(String payUrl, Map<String, String> requestToUpParams) {
-        Map<String, String> head = new HashMap();
-        head.put("Content-Type", "application/json");
-        return  HttpKit.post(payUrl, JSON.toJSONString(requestToUpParams), head);
-    }
-
-    @Override
-    protected OrderApiRespParams returnRespToDown(String result) {
+    /*public OrderApiRespParams returnRespToDown(String result) {
         Map<String, String> resultMap = JSON.parseObject(result, new TypeReference<Map<String, String>>() {
         });
         String code = resultMap.get("detail");
@@ -113,8 +78,7 @@ public class KuaiLeFu extends AbstractPay {
         return orderApiRespParams;
     }
 
-    @Override
-    protected boolean verifySignParams(Map<String, String> params) {
+    public boolean verifySignParams(Map<String, String> params) {
         Map<String, String> treeMap = new TreeMap<>(params);
         String sign = treeMap.remove("sign");
         String signStr = formatSignData(params);
@@ -122,8 +86,7 @@ public class KuaiLeFu extends AbstractPay {
         return newSign.equals(sign);
     }
 
-    @Override
-    protected String updateOrder(Map<String, String> params) {
+    public String updateOrder(Map<String, String> params) {
         String trade_no = params.get("orderNo");
         String trade_status = params.get("status");
         String amount = params.get("bizAmt");
@@ -142,32 +105,6 @@ public class KuaiLeFu extends AbstractPay {
         } catch (Exception e) {
             throw new RException("下发通知报错:" + e.getMessage());
         }
-        return"SUCCESS";
-    }
-
-
-    private static String formatSignData(Map<String, String> signDataMap) {
-        Set<String> sortedSet = new TreeSet<String>(signDataMap.keySet());
-        StringBuffer sb = new StringBuffer();
-        for (String key : sortedSet) {
-            if ("sign".equalsIgnoreCase(key)) {
-                continue;
-            }
-
-            if (signDataMap.get(key) != null) {
-                String v = String.valueOf(signDataMap.get(key));
-                if (StringUtils.isNotBlank(v)) {
-                    sb.append(key);
-                    sb.append("=");
-                    sb.append(v);
-                    sb.append("&");
-                }
-            }
-        }
-        String s = sb.toString();
-        if (s.length() > 0) {
-            s = s.substring(0, s.length() - 1);
-        }
-        return s;
-    }
+        return "SUCCESS";
+    }*/
 }

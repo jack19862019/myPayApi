@@ -1,10 +1,11 @@
 package com.pay.rmi.paylog;
 
 
+import com.pay.common.enums.IsValue;
 import org.springframework.scheduling.annotation.Async;
 
 public interface PayLogService {
 
     @Async
-    void insert(String name, String msg,  Object... arguments);
+    void insertPayOrderLog(IsValue isValue, String... args);
 }

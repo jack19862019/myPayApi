@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum IsValue implements Serializable {
-    PRO(-1, "取字段"),
-    VAL(1, "取值"),
+    BC(-1, "报错"),
+    ZC(1, "正常"),
     ;
 
 

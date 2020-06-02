@@ -1,4 +1,4 @@
-package com.pay.rmi.paythird.kuailefu;
+package com.pay.rmi.paythird.kuailefu.util;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -14,21 +14,21 @@ import java.util.UUID;
 /**
  * Class MD5
  * Description
- * Create 2016-02-25 01:03:21 
- * @author Ardy    
+ * Create 2016-02-25 01:03:21
+ * @author Ardy
  */
 public class PayMD5 {
 
-    /** 
+    /**
      * Field hexDigits
-     * Description 
+     * Description
      */
     private final static String[] hexDigits = {
         "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"
     };
 
     /**
-     * Method byteArrayToHexString 
+     * Method byteArrayToHexString
      * Description 说明：
      *
      * @param b 说明：
@@ -46,7 +46,7 @@ public class PayMD5 {
     }
 
     /**
-     * Method byteToHexString 
+     * Method byteToHexString
      * Description 说明：
      *
      * @param b 说明：
@@ -67,7 +67,7 @@ public class PayMD5 {
     }
 
     /**
-     * Method MD5Encode 
+     * Method MD5Encode
      * Description 说明：
      *
      * @param origin 说明：
@@ -91,7 +91,7 @@ public class PayMD5 {
     }
 
     /**
-     * Method md5 
+     * Method md5
      * Description 说明：
      *
      * @param password 说明：
@@ -109,7 +109,7 @@ public class PayMD5 {
     }
 
     /**
-     * Method md5 
+     * Method md5
      * Description 说明：
      *
      * @param username 说明：
@@ -137,7 +137,7 @@ public class PayMD5 {
        return  MD5Encode(origin).substring(8, 24);
     }
     /**
-     * Method main 
+     * Method main
      * Description 说明：
      *
      * @param args 说明：

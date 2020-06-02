@@ -1,35 +1,36 @@
 package com.pay.data.entity;
 
+import com.pay.common.enums.IsValue;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "pay_log",
         indexes = {
-                @Index(columnList = "channelName"),
                 @Index(columnList = "channelFlag"),
-                @Index(name = "channel_flag_channel_name", columnList = "channelName"),
-                @Index(name = "channel_flag_channel_name", columnList = "channelFlag"),
-        })
-public class PayLogEntity {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
-
-    @CreatedDate
-    private Date createTime;
+                @Index(columnList = "orderNo")})
+public class PayLogEntity extends BaseEntity {
 
     private String channelFlag;
 
-    private String channelName;
+    private String orderNo;
+
+    private String method;
+
+    private IsValue isValue;
 
     @Column(columnDefinition = "text")
-    private String logContent;
+    private String rGinseng;
+
+    @Column(columnDefinition = "text")
+    private String cGinseng;
+
 }
+

@@ -69,7 +69,7 @@ public class Api {
 
         OrderApiRespParams respParams;
         try {
-            respParams = payService.order(channel, mcpConfig, reqParams);
+            respParams = payService.orderBusiness(channel, mcpConfig, reqParams);
         } catch (Exception e) {
             log.info(e.getMessage(), e);
             throw new RException(channel.getChannelName(), e.getMessage(), e);
