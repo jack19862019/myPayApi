@@ -13,7 +13,7 @@ public class BaseAspect {
     protected String orderNo = "orderNo";
     protected String channelNo = "channelNo";
     protected String rStr = "rStr";
-    protected String cStr = "rStr";
+    protected String cStr = "cStr";
     protected String optionUser = "optionUser";
     protected IsValue isValue = IsValue.ZC;//是否报错
 

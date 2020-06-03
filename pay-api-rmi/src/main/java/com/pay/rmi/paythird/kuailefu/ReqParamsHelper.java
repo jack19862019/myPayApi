@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-public class ReqParamsBuilder {
+public class ReqParamsHelper {
 
     public Map<String, String> requestToUpParams(ChannelEntity channelEntity, McpConfigEntity mcpConfig, OrderReqParams reqParams, String callbackUrl) {
         Optional<UpPayTypeEntity> upPayTypeEntity = channelEntity.getUpPayTypes().stream()
@@ -33,7 +33,6 @@ public class ReqParamsBuilder {
         params.put("noticeUrl", callbackUrl);
         params.put("accName", "张三");
         params.put("cardNo", "6230520080090842211");
-        int i = 1/0;
         return params;
     }
 }

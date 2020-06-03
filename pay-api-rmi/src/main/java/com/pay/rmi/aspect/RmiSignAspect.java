@@ -1,12 +1,14 @@
 package com.pay.rmi.aspect;
 
+import com.alibaba.fastjson.JSON;
+import com.pay.common.enums.IsValue;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Aspect
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class RmiSignAspect extends BaseAspect {
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.kuailefu.SignBuilder.signToUp(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.SignBuilder.signToUp(..))")
     public void logSignToUp() {
 
     }
@@ -22,14 +24,29 @@ public class RmiSignAspect extends BaseAspect {
 
     @Before("logSignToUp()")
     public void logSignToUp(JoinPoint pjd) {
-        String string = map.get(orderNo).toString();
-        System.out.println("******************************************" + orderNo);
+        String argContext = pjd.getArgs()[0].toString();
+        String argUpKey = pjd.getArgs()[1].toString();
+        Map mapStr = new HashMap();
+        mapStr.put("context", argContext);
+        mapStr.put("upKey", argUpKey);
+        map.put(rStr, JSON.toJSONString(mapStr));
+        map.put(methodName, pjd.getSignature().getName());
     }
 
     @AfterReturning(value = "logSignToUp()", returning = "result")
-    public void afterReturning(JoinPoint joinPoint, Object result) {
-        String methodName = joinPoint.getSignature().getName();
-        System.out.println("The method " + methodName + " return with " + result);
+    public void afterReturning(Object result) {
+        map.put(cStr, result);
+        map.put(isValue, IsValue.ZC);
+        savePayLog();
     }
 
+    @AfterThrowing(value = "logSignToUp()", throwing = "ex")
+    public void afterThrowing(Exception ex) {
+        StackTraceElement stackTraceElement= ex.getStackTrace()[0];
+        String className = stackTraceElement.getClassName();
+        String lineNumber = String.valueOf(stackTraceElement.getLineNumber());
+        map.put(cStr, className + lineNumber + "行: " + ex);
+        map.put(isValue, IsValue.BC);
+        savePayLog();
+    }
 }

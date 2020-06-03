@@ -2,44 +2,46 @@ package com.pay.rmi.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.pay.common.enums.IsValue;
-import com.pay.data.params.OrderReqParams;
+import com.pay.rmi.paylog.PayLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 @Slf4j
 @Aspect
 @Component
-public class RmiReqParamsAspect extends BaseAspect {
+public class RmiReturnAspect extends BaseAspect {
+
+    @Autowired
+    private PayLogService payLogService;
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.*.ReqParamsBuilder.requestToUpParams(..))")
-    public void logRequestToUpParams() {
+    @Pointcut("execution(* com.pay.rmi.paythird.*.HttpReqHelper.returnDown(..))")
+    public void logReturnDown() {
 
     }
 
 
-    @Before("logRequestToUpParams()")
-    public void logRequestToUpParams(JoinPoint pjd) {
-        OrderReqParams orderReqParams = (OrderReqParams) pjd.getArgs()[2];
-        map.put(orderNo, orderReqParams.getOrderNo());
-        map.put(optionUser, orderReqParams.getUserId());
-        map.put(rStr, JSON.toJSONString(orderReqParams));
-        map.put(channelNo, orderReqParams.getChannelNo());
+    @Before("logReturnDown()")
+    public void logHttpReq(JoinPoint pjd) {
+        map.put(rStr, pjd.getArgs()[1]);
         map.put(methodName, pjd.getSignature().getName());
     }
 
-    @AfterReturning(value = "logRequestToUpParams()", returning = "result")
+
+    @AfterReturning(value = "logReturnDown()", returning = "result")
     public void afterReturning(Object result) {
         map.put(cStr, JSON.toJSONString(result));
         map.put(isValue, IsValue.ZC);
         savePayLog();
     }
 
-    @AfterThrowing(value = "logRequestToUpParams()", throwing = "ex")
+    @AfterThrowing(value = "logReturnDown()", throwing = "ex")
     public void afterThrowing(Exception ex) {
-        StackTraceElement stackTraceElement= ex.getStackTrace()[0];
+        StackTraceElement stackTraceElement = ex.getStackTrace()[0];
         String className = stackTraceElement.getClassName();
         String lineNumber = String.valueOf(stackTraceElement.getLineNumber());
         map.put(cStr, className + lineNumber + "行: " + ex);
