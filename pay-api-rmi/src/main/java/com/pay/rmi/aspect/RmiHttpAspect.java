@@ -19,7 +19,7 @@ public class RmiHttpAspect extends BaseAspect {
     private PayLogService payLogService;
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.*.HttpReqHelper.httpRequestToUp(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.*.httpRequestToUp(..))")
     public void logHttpReq() {
 
     }

@@ -16,7 +16,7 @@ import java.util.Map;
 public class RmiSignAspect extends BaseAspect {
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.*.SignBuilder.signToUp(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.*.signToUp(..))")
     public void logSignToUp() {
 
     }

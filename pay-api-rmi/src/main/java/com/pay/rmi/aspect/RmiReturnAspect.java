@@ -19,7 +19,7 @@ public class RmiReturnAspect extends BaseAspect {
     private PayLogService payLogService;
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.*.HttpReqHelper.returnDown(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.*.returnDown(..))")
     public void logReturnDown() {
 
     }

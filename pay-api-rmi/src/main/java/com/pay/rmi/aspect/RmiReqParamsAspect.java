@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class RmiReqParamsAspect extends BaseAspect {
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.*.ReqParamsBuilder.requestToUpParams(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.*.requestToUpParams(..))")
     public void logRequestToUpParams() {
 
     }
