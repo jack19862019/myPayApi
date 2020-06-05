@@ -20,9 +20,10 @@ public class PayLogServiceImpl extends AbstractHelper<PayLogRepository, PayLogEn
 
 
     @Override
-    public void insertPayOrderLog(IsValue isValue, String... args) {
+    public void insertPayOrderLog(IsValue isValue,Integer sort, String... args) {
         PayLogEntity payLog = new PayLogEntity();
         payLog.setIsValue(isValue);
+        payLog.setSort(sort);
         payLog.setMethod(args[0]);
         payLog.setOrderNo(args[1]);
         payLog.setChannelFlag(args[2]);

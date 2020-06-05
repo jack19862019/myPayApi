@@ -32,5 +32,7 @@ public class PayLogEntity extends BaseEntity {
     @Column(columnDefinition = "text")
     private String cGinseng;
 
+    private Integer sort;
+
 }
 

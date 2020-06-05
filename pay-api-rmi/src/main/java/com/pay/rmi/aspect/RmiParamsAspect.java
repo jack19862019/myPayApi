@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-public class RmiReqParamsAspect extends BaseAspect {
+public class RmiParamsAspect extends BaseAspect {
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.*.*.requestToUpParams(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.*Helper.requestToUpParams(..))")
     public void logRequestToUpParams() {
 
     }
@@ -22,12 +22,13 @@ public class RmiReqParamsAspect extends BaseAspect {
 
     @Before("logRequestToUpParams()")
     public void logRequestToUpParams(JoinPoint pjd) {
-        OrderReqParams orderReqParams = (OrderReqParams) pjd.getArgs()[2];
+        map.put(sortStr, 0);
+        map.put(methodName, pjd.getSignature().getName());
+        OrderReqParams orderReqParams = (OrderReqParams) pjd.getArgs()[0];
         map.put(orderNo, orderReqParams.getOrderNo());
         map.put(optionUser, orderReqParams.getUserId());
         map.put(rStr, JSON.toJSONString(orderReqParams));
         map.put(channelNo, orderReqParams.getChannelNo());
-        map.put(methodName, pjd.getSignature().getName());
     }
 
     @AfterReturning(value = "logRequestToUpParams()", returning = "result")
@@ -35,6 +36,10 @@ public class RmiReqParamsAspect extends BaseAspect {
         map.put(cStr, JSON.toJSONString(result));
         map.put(isValue, IsValue.ZC);
         savePayLog();
+        map.remove(cStr);
+        map.remove(isValue);
+        map.remove(rStr);
+        map.remove(methodName);
     }
 
     @AfterThrowing(value = "logRequestToUpParams()", throwing = "ex")

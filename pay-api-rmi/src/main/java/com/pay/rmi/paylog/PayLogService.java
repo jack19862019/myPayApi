@@ -7,5 +7,5 @@ import org.springframework.scheduling.annotation.Async;
 public interface PayLogService {
 
     @Async
-    void insertPayOrderLog(IsValue isValue, String... args);
+    void insertPayOrderLog(IsValue isValue, Integer sort, String... args);
 }

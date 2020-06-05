@@ -1,48 +1,57 @@
 package com.pay.rmi.paythird;
 
+import com.pay.data.entity.ChannelEntity;
+import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.OrderEntity;
 import com.pay.data.mapper.ChannelRepository;
 import com.pay.data.mapper.MerchantRepository;
 import com.pay.data.mapper.PayTypeRepository;
 import com.pay.data.params.OrderReqParams;
+import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.pay.order.delay.NotifyTask;
 import com.pay.rmi.service.ApiOrderService;
 import com.tuyang.beanutils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class AbstractPay {
-
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
-
-    @Value("${platform.domain}")
-    private String domain;
+public class OrderApiFactory {
 
     @Autowired
     protected NotifyTask notifyTask;
 
+    @Value("${platform.domain}")
+    private String domain;
 
-    protected String getCallbackUrl(String channelNo, String merchantNo, String orderNo) {
-        return domain + contextPath + "/callback/" + channelNo + "/" + merchantNo + "/" + orderNo;
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
+    protected ChannelEntity channel;
+    protected McpConfigEntity mcpConfig;
+    protected OrderReqParams reqParams;
+    protected OrderEntity order;
+
+    protected String result;
+
+    protected Map<String, String> params = new HashMap<>();
+
+    protected String getCallbackUrl() {
+        return domain + contextPath + "/callback/" + reqParams.getChannelNo() + "/" + reqParams.getMerchNo() + "/" + reqParams.getOrderNo();
     }
 
+    protected OrderApiFactory() {
+    }
 
     protected void saveOrder(OrderReqParams reqParams, String upMerchantNo) {
-        saveOrder(reqParams, upMerchantNo, null);
-    }
-
-    private void saveOrder(OrderReqParams reqParams, String upMerchantNo, String businessNo) {
         OrderEntity order = BeanCopyUtils.copyBean(reqParams, OrderEntity.class);
         order.setChannel(channelRepository.findByChannelFlag(reqParams.getChannelNo()));
         order.setMerchant(merchantRepository.findByMerchantNo(reqParams.getMerchNo()));
         order.setOrderAmount(new BigDecimal(reqParams.getAmount()));
         order.setUpMerchantNo(upMerchantNo);
-        order.setBusinessNo(businessNo);
         order.setCreateTime(new Date());
         order.setCreateUser(reqParams.getMerchNo());
         order.setUpdateTime(new Date());
@@ -58,9 +67,6 @@ public abstract class AbstractPay {
 
     @Autowired
     MerchantRepository merchantRepository;
-
-    @Autowired
-    protected RestTemplate restTemplate;
 
     @Autowired
     protected ApiOrderService orderService;

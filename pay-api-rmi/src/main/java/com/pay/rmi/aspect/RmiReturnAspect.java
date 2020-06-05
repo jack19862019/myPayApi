@@ -15,11 +15,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RmiReturnAspect extends BaseAspect {
 
-    @Autowired
-    private PayLogService payLogService;
 
-
-    @Pointcut("execution(* com.pay.rmi.paythird.*.*.returnDown(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.*Helper.returnDown(..))")
     public void logReturnDown() {
 
     }
@@ -27,8 +24,9 @@ public class RmiReturnAspect extends BaseAspect {
 
     @Before("logReturnDown()")
     public void logHttpReq(JoinPoint pjd) {
-        map.put(rStr, pjd.getArgs()[1]);
+        map.put(sortStr, 3);
         map.put(methodName, pjd.getSignature().getName());
+        map.put(rStr, pjd.getArgs()[0]);
     }
 
 
@@ -37,6 +35,10 @@ public class RmiReturnAspect extends BaseAspect {
         map.put(cStr, JSON.toJSONString(result));
         map.put(isValue, IsValue.ZC);
         savePayLog();
+        map.remove(cStr);
+        map.remove(isValue);
+        map.remove(rStr);
+        map.remove(methodName);
     }
 
     @AfterThrowing(value = "logReturnDown()", throwing = "ex")

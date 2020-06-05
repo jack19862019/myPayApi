@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class BaseAspect {
 
+    protected String sortStr = "sortStr";
     protected String methodName = "methodName";
     protected String orderNo = "orderNo";
     protected String channelNo = "channelNo";
@@ -26,6 +27,7 @@ public class BaseAspect {
     protected void savePayLog() {
         payLogService.insertPayOrderLog(
                 IsValue.getStatusByCode(((IsValue)map.get(isValue)).getCode()),
+                Integer.valueOf(map.get(sortStr).toString()),
                 map.get(methodName).toString(),
                 map.get(orderNo).toString(),
                 map.get(channelNo).toString(),
