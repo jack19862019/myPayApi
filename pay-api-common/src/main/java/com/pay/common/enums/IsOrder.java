@@ -5,16 +5,16 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum IsCustom implements Serializable {
-    DELETE(-1, "否"),
-    NORMAL(1, "自定义"),
+public enum IsOrder implements Serializable {
+    BACK(-1, "回调"),
+    ORDER(1, "下单"),
     ;
 
 
     private Integer code;
     private String name;
 
-    IsCustom(int code, String name) {
+    IsOrder(int code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -27,25 +27,25 @@ public enum IsCustom implements Serializable {
         return name;
     }
 
-    private static Map<Integer, IsCustom> map = new HashMap<>();
+    private static Map<Integer, IsOrder> map = new HashMap<>();
 
-    private static Map<String, IsCustom> mapString = new HashMap<>();
+    private static Map<String, IsOrder> mapString = new HashMap<>();
 
 
-    public static IsCustom getStatusByName(String name) {
+    public static IsOrder getStatusByName(String name) {
         if (mapString == null || mapString.isEmpty()) {
             mapString = new HashMap<>();
-            for (IsCustom status : IsCustom.values()) {
+            for (IsOrder status : IsOrder.values()) {
                 mapString.put(status.getName(), status);
             }
         }
         return map.get(name);
     }
 
-    public static IsCustom getStatusByCode(int code) {
+    public static IsOrder getStatusByCode(int code) {
         if (map == null || map.isEmpty()) {
             map = new HashMap<>();
-            for (IsCustom status : IsCustom.values()) {
+            for (IsOrder status : IsOrder.values()) {
                 map.put(status.getCode(), status);
             }
         }
@@ -54,24 +54,24 @@ public enum IsCustom implements Serializable {
 
 
     public static String getName(int code) {
-        IsCustom type = getStatusByCode(code);
+        IsOrder type = getStatusByCode(code);
         return type == null ? "" : type.getName();
     }
 
-    public int getCode(IsCustom sex) {
+    public int getCode(IsOrder sex) {
         return sex.getCode();
     }
 
 
-    public static class Convert implements AttributeConverter<IsCustom, Integer> {
+    public static class Convert implements AttributeConverter<IsOrder, Integer> {
         @Override
-        public Integer convertToDatabaseColumn(IsCustom attribute) {
+        public Integer convertToDatabaseColumn(IsOrder attribute) {
             return attribute == null ? null : attribute.getCode();
         }
 
         @Override
-        public IsCustom convertToEntityAttribute(Integer dbData) {
-            for (IsCustom type : IsCustom.values()) {
+        public IsOrder convertToEntityAttribute(Integer dbData) {
+            for (IsOrder type : IsOrder.values()) {
                 if (dbData.equals(type.getCode())) {
                     return type;
                 }

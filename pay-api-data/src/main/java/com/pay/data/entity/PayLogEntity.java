@@ -1,5 +1,6 @@
 package com.pay.data.entity;
 
+import com.pay.common.enums.IsOrder;
 import com.pay.common.enums.IsValue;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,8 @@ public class PayLogEntity extends BaseEntity {
     private String cGinseng;
 
     private Integer sort;
+
+    private IsOrder isOrder;
 
 }
 

@@ -7,6 +7,7 @@ import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.paythird.OrderApiFactory;
 import com.pay.rmi.paythird.PayService;
+import com.pay.rmi.paythird.kuailefu.KuaiLeFuBackHelper;
 import com.pay.rmi.paythird.kuailefu.KuaiLeFuOrderHelper;
 import com.pay.rmi.paythird.kuailefu.util.StrKit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class KuaiLeFu extends OrderApiFactory implements PayService {
 
     @Override
     public String callback(OrderEntity order, McpConfigEntity mcpConfig, Map<String, String> params) {
-        return null;
+        KuaiLeFuBackHelper kuaiLeFuBackHelper = new KuaiLeFuBackHelper(mcpConfig, order, params);
+        return kuaiLeFuBackHelper.checkOrder().verifySign().checkStatus().updateOrder().done();
     }
 }

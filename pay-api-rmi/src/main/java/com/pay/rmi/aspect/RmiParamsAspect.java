@@ -1,6 +1,7 @@
 package com.pay.rmi.aspect;
 
 import com.alibaba.fastjson.JSON;
+import com.pay.common.enums.IsOrder;
 import com.pay.common.enums.IsValue;
 import com.pay.data.params.OrderReqParams;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class RmiParamsAspect extends BaseAspect {
 
     @Before("logRequestToUpParams()")
     public void logRequestToUpParams(JoinPoint pjd) {
+        map.put(isOrder, IsOrder.ORDER);
         map.put(sortStr, 0);
         map.put(methodName, pjd.getSignature().getName());
         OrderReqParams orderReqParams = (OrderReqParams) pjd.getArgs()[0];

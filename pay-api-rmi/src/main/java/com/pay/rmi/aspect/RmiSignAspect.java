@@ -1,6 +1,7 @@
 package com.pay.rmi.aspect;
 
 import com.alibaba.fastjson.JSON;
+import com.pay.common.enums.IsOrder;
 import com.pay.common.enums.IsValue;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -24,6 +25,7 @@ public class RmiSignAspect extends BaseAspect {
 
     @Before("logSignToUp()")
     public void logSignToUp(JoinPoint pjd) {
+        map.put(isOrder, IsOrder.ORDER);
         map.put(sortStr, 1);
         map.put(methodName, pjd.getSignature().getName());
         String argContext = pjd.getArgs()[0].toString();

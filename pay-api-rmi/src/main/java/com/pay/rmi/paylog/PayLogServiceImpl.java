@@ -1,5 +1,6 @@
 package com.pay.rmi.paylog;
 
+import com.pay.common.enums.IsOrder;
 import com.pay.common.enums.IsValue;
 import com.pay.data.entity.PayLogEntity;
 import com.pay.data.mapper.ChannelRepository;
@@ -20,9 +21,10 @@ public class PayLogServiceImpl extends AbstractHelper<PayLogRepository, PayLogEn
 
 
     @Override
-    public void insertPayOrderLog(IsValue isValue,Integer sort, String... args) {
+    public void insertPayOrderLog(IsValue isValue, IsOrder isOrder, Integer sort, String... args) {
         PayLogEntity payLog = new PayLogEntity();
         payLog.setIsValue(isValue);
+        payLog.setIsOrder(isOrder);
         payLog.setSort(sort);
         payLog.setMethod(args[0]);
         payLog.setOrderNo(args[1]);

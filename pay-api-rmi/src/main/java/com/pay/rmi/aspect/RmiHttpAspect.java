@@ -1,6 +1,7 @@
 package com.pay.rmi.aspect;
 
 import com.alibaba.fastjson.JSON;
+import com.pay.common.enums.IsOrder;
 import com.pay.common.enums.IsValue;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -22,6 +23,7 @@ public class RmiHttpAspect extends BaseAspect {
 
     @Before("logHttpReq()")
     public void logHttpReq(JoinPoint pjd) {
+        map.put(isOrder, IsOrder.ORDER);
         map.put(sortStr, 2);
         map.put(methodName, pjd.getSignature().getName());
         map.put(rStr, JSON.toJSONString(pjd.getArgs()[0]));
