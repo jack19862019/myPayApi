@@ -4,5 +4,5 @@ import com.pay.rmi.api.resp.OrderApiRespParams;
 
 public interface ReturnDownService {
 
-    OrderApiRespParams returnDown(String result);
+    OrderApiRespParams returnDown(String resultOrPayUrl);
 }

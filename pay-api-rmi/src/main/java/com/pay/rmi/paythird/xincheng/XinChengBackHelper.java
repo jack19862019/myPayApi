@@ -24,7 +24,7 @@ public class XinChengBackHelper extends CallBackFactory {
 
     public XinChengBackHelper(McpConfigEntity mcpConfig, OrderEntity order, Map<String, String> params) {
         this.mcpConfig = mcpConfig;
-        this.params = params;
+        this.callBackParams = params;
         this.order = order;
     }
 
@@ -34,23 +34,23 @@ public class XinChengBackHelper extends CallBackFactory {
     }
 
     public XinChengBackHelper verifySign() {
-        Map<String, String> treeMap = new TreeMap<>(params);
+        Map<String, String> treeMap = new TreeMap<>(callBackParams);
         String sign = treeMap.remove("Sign");
-        String signStr = StrKit.formatSignData(params);
+        String signStr = StrKit.formatSignData(callBackParams);
         String newSign = PayMD5.MD5Encode(signStr +"&key="+ mcpConfig.getUpKey()).toUpperCase();
         Assert.mustBeTrue(newSign.equals(sign), order.getOrderNo() + "订单验签失败！");
         return this;
     }
 
     public XinChengBackHelper checkStatus() {
-        String tradeStatus = params.get("PayStatus");
+        String tradeStatus = callBackParams.get("PayStatus");
         Assert.mustBeTrue(!"Order_SUCCESS".equals(tradeStatus), "支付未成功，终止通知下游！");
         return this;
     }
 
     public XinChengBackHelper updateOrder() {
-        String trade_no = params.get("CreateTradeNo");
-        String amount = params.get("CreateMoney");
+        String trade_no = callBackParams.get("CreateTradeNo");
+        String amount = callBackParams.get("CreateMoney");
         order.setOrderStatus(OrderStatus.succ);
         order.setRealAmount(new BigDecimal(amount));
         order.setBusinessNo(trade_no);

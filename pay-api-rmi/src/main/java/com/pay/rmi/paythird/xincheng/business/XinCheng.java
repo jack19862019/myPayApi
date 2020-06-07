@@ -7,7 +7,6 @@ import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.paythird.OrderApiFactory;
 import com.pay.rmi.paythird.PayService;
-import com.pay.rmi.paythird.kuailefu.KuaiLeFuBackHelper;
 import com.pay.rmi.paythird.kuailefu.util.StrKit;
 import com.pay.rmi.paythird.xincheng.XinChengBackHelper;
 import com.pay.rmi.paythird.xincheng.XinChengOrderHelper;
@@ -38,12 +37,12 @@ public class XinCheng extends OrderApiFactory implements PayService {
         String sign = xinChengOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("Sign", sign);
         //from表单提交
-        return xinChengOrderHelper.returnDown(result);
+        return xinChengOrderHelper.returnDown(channel.getUpPayUrl());
     }
 
     @Override
     public String callback(OrderEntity order, McpConfigEntity mcpConfig, Map<String, String> params) {
-        XinChengBackHelper  xinChengBackHelper= new XinChengBackHelper(mcpConfig, order, params);
+        XinChengBackHelper xinChengBackHelper= new XinChengBackHelper(mcpConfig, order, params);
         return xinChengBackHelper.checkOrder().verifySign().checkStatus().updateOrder().done();
     }
 }

@@ -22,7 +22,7 @@ public class KuaiLeFuBackHelper extends CallBackFactory {
 
     public KuaiLeFuBackHelper(McpConfigEntity mcpConfig, OrderEntity order, Map<String, String> params) {
         this.mcpConfig = mcpConfig;
-        this.params = params;
+        this.callBackParams = params;
         this.order = order;
     }
 
@@ -32,23 +32,23 @@ public class KuaiLeFuBackHelper extends CallBackFactory {
     }
 
     public KuaiLeFuBackHelper verifySign() {
-        Map<String, String> treeMap = new TreeMap<>(params);
+        Map<String, String> treeMap = new TreeMap<>(callBackParams);
         String sign = treeMap.remove("sign");
-        String signStr = StrKit.formatSignData(params);
+        String signStr = StrKit.formatSignData(callBackParams);
         String newSign = PayMD5.MD5Encode(signStr + mcpConfig.getUpKey()).toLowerCase();
         Assert.mustBeTrue(newSign.equals(sign), order.getOrderNo() + "订单验签失败！");
         return this;
     }
 
     public KuaiLeFuBackHelper checkStatus() {
-        String tradeStatus = params.get("status");
+        String tradeStatus = callBackParams.get("status");
         Assert.mustBeTrue(!"1".equals(tradeStatus), "支付未成功，终止通知下游！");
         return this;
     }
 
     public KuaiLeFuBackHelper updateOrder() {
-        String trade_no = params.get("orderNo");
-        String amount = params.get("bizAmt");
+        String trade_no = callBackParams.get("orderNo");
+        String amount = callBackParams.get("bizAmt");
         order.setOrderStatus(OrderStatus.succ);
         order.setRealAmount(new BigDecimal(amount));
         order.setBusinessNo(trade_no);

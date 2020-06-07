@@ -21,5 +21,5 @@ public class CallBackFactory {
     protected McpConfigEntity mcpConfig;
     protected OrderEntity order;
 
-    protected Map<String, String> params;
+    protected Map<String, String> callBackParams;
 }
