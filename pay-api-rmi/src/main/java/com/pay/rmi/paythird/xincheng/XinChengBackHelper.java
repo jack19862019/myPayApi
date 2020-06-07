@@ -13,19 +13,22 @@ import com.pay.rmi.paythird.kuailefu.util.PayMD5;
 import com.pay.rmi.paythird.kuailefu.util.StrKit;
 import com.pay.rmi.service.ApiOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Component
 public class XinChengBackHelper extends CallBackFactory {
 
     private String flagSuccess = "success";
 
-    public XinChengBackHelper(McpConfigEntity mcpConfig, OrderEntity order, Map<String, String> params) {
+    public XinChengBackHelper init(McpConfigEntity mcpConfig, OrderEntity order, Map<String, String> params) {
         this.mcpConfig = mcpConfig;
         this.callBackParams = params;
         this.order = order;
+        return this;
     }
 
     public XinChengBackHelper checkOrder() {
@@ -44,7 +47,7 @@ public class XinChengBackHelper extends CallBackFactory {
 
     public XinChengBackHelper checkStatus() {
         String tradeStatus = callBackParams.get("PayStatus");
-        Assert.mustBeTrue(!"Order_SUCCESS".equals(tradeStatus), "支付未成功，终止通知下游！");
+        Assert.mustBeTrue("Order_SUCCESS".equals(tradeStatus), "支付未成功，终止通知下游！");
         return this;
     }
 
@@ -67,11 +70,5 @@ public class XinChengBackHelper extends CallBackFactory {
     public String done() {
         return flagSuccess;
     }
-
-    @Autowired
-    ApiOrderService orderService;
-
-    @Autowired
-    NotifyTask notifyTask;
 
 }

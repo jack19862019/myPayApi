@@ -21,9 +21,6 @@ import java.util.Map;
 
 public class OrderApiFactory {
 
-    @Autowired
-    protected NotifyTask notifyTask;
-
     @Value("${platform.domain}")
     private String domain;
 

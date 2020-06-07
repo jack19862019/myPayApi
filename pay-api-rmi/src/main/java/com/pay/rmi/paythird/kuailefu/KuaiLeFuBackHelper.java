@@ -5,25 +5,25 @@ import com.pay.common.exception.Assert;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.OrderEntity;
 import com.pay.rmi.common.exception.RException;
-import com.pay.rmi.pay.order.delay.NotifyTask;
 import com.pay.rmi.paythird.CallBackFactory;
 import com.pay.rmi.paythird.kuailefu.util.PayMD5;
 import com.pay.rmi.paythird.kuailefu.util.StrKit;
-import com.pay.rmi.service.ApiOrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Component
 public class KuaiLeFuBackHelper extends CallBackFactory {
 
     private String flagSuccess = "SUCCESS";
 
-    public KuaiLeFuBackHelper(McpConfigEntity mcpConfig, OrderEntity order, Map<String, String> params) {
+    public KuaiLeFuBackHelper init(McpConfigEntity mcpConfig, OrderEntity order, Map<String, String> params) {
         this.mcpConfig = mcpConfig;
         this.callBackParams = params;
         this.order = order;
+        return this;
     }
 
     public KuaiLeFuBackHelper checkOrder() {
@@ -65,11 +65,5 @@ public class KuaiLeFuBackHelper extends CallBackFactory {
     public String done() {
         return flagSuccess;
     }
-
-    @Autowired
-    ApiOrderService orderService;
-
-    @Autowired
-    NotifyTask notifyTask;
 
 }

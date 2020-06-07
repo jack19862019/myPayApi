@@ -11,6 +11,7 @@ import com.pay.rmi.paythird.kuailefu.util.StrKit;
 import com.pay.rmi.paythird.xincheng.XinChengBackHelper;
 import com.pay.rmi.paythird.xincheng.XinChengOrderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -25,6 +26,9 @@ public class XinCheng extends OrderApiFactory implements PayService {
 
     @Autowired
     XinChengOrderHelper xinChengOrderHelper;
+
+    @Autowired
+    XinChengBackHelper xinChengBackHelper;
 
     @Override
     public OrderApiRespParams orderBusiness(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams) {
@@ -42,7 +46,7 @@ public class XinCheng extends OrderApiFactory implements PayService {
 
     @Override
     public String callback(OrderEntity order, McpConfigEntity mcpConfig, Map<String, String> params) {
-        XinChengBackHelper xinChengBackHelper= new XinChengBackHelper(mcpConfig, order, params);
-        return xinChengBackHelper.checkOrder().verifySign().checkStatus().updateOrder().done();
+        XinChengBackHelper xinChengBack = xinChengBackHelper.init(mcpConfig, order, params);
+        return xinChengBack.checkOrder().verifySign().checkStatus().updateOrder().done();
     }
 }

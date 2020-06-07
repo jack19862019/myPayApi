@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class BaseAspect {
 
+    protected String callbackOptionUser = "上游";
     protected String sortStr = "sortStr";
     protected String methodName = "methodName";
     protected String orderNo = "orderNo";

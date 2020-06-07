@@ -26,6 +26,9 @@ public class KuaiLeFu extends OrderApiFactory implements PayService {
     @Autowired
     KuaiLeFuOrderHelper kuaiLeFuOrderHelper;
 
+    @Autowired
+    KuaiLeFuBackHelper kuaiLeFuBackHelper;
+
     @Override
     public OrderApiRespParams orderBusiness(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams) {
         //初始化
@@ -44,7 +47,7 @@ public class KuaiLeFu extends OrderApiFactory implements PayService {
 
     @Override
     public String callback(OrderEntity order, McpConfigEntity mcpConfig, Map<String, String> params) {
-        KuaiLeFuBackHelper kuaiLeFuBackHelper = new KuaiLeFuBackHelper(mcpConfig, order, params);
-        return kuaiLeFuBackHelper.checkOrder().verifySign().checkStatus().updateOrder().done();
+        KuaiLeFuBackHelper kuaiLeFuBack = kuaiLeFuBackHelper.init(mcpConfig, order, params);
+        return kuaiLeFuBack.checkOrder().verifySign().checkStatus().updateOrder().done();
     }
 }
