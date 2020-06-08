@@ -29,19 +29,12 @@ import java.util.*;
 
 
 @Component
-public class XinChengOrderHelper extends OrderApiFactory implements ParamsService, HttpService, ReturnDownService {
+public class XinChengOrderHelper extends OrderApiFactory implements ParamsService, ReturnDownService {
 
     public void init(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams) {
         this.channel = channel;
         this.mcpConfig = mcpConfig;
         this.reqParams = reqParams;
-    }
-
-    @Override
-    public String httpPost(Map<String, String> params) {
-        Map<String, String> head = new HashMap();
-        head.put("Content-Type", "application/json");
-        return HttpKit.post(channel.getUpPayUrl(), JSON.toJSONString(this.params), head);
     }
 
     @Override

@@ -19,7 +19,7 @@ import java.util.Map;
 public class RmiCallBackAspect extends BaseAspect {
 
 
-    @Pointcut("execution(* com.pay.rmi.paythird.*.*Helper.init(..))")
+    @Pointcut("execution(* com.pay.rmi.paythird.*.*BackHelper.init(..))")
     public void logCallBack() {
 
     }
