@@ -5,13 +5,12 @@ import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.OrderEntity;
 import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
+import com.pay.rmi.common.utils.SignUtils;
 import com.pay.rmi.paythird.OrderApiFactory;
 import com.pay.rmi.paythird.PayService;
-import com.pay.rmi.paythird.kuailefu.util.StrKit;
 import com.pay.rmi.paythird.xincheng.XinChengBackHelper;
 import com.pay.rmi.paythird.xincheng.XinChengOrderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -37,7 +36,7 @@ public class XinCheng extends OrderApiFactory implements PayService {
         //请求基本参数
         Map<String, String> map = xinChengOrderHelper.requestToUpParams(reqParams);
         //加签
-        String signData = StrKit.formatSignData(map);
+        String signData = SignUtils.buildParams(params);
         String sign = xinChengOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("Sign", sign);
         //from表单提交

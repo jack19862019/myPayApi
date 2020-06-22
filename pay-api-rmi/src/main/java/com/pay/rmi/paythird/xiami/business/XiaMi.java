@@ -5,9 +5,9 @@ import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.OrderEntity;
 import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
+import com.pay.rmi.common.utils.SignUtils;
 import com.pay.rmi.paythird.OrderApiFactory;
 import com.pay.rmi.paythird.PayService;
-import com.pay.rmi.paythird.kuailefu.util.StrKit;
 import com.pay.rmi.paythird.xiami.XiaMiBackHelper;
 import com.pay.rmi.paythird.xiami.XiaMiOrderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class XiaMi extends OrderApiFactory implements PayService {
         //请求基本参数
         Map<String, String> map = xiaMiOrderHelper.requestToUpParams(reqParams);
         //加签
-        String signData = StrKit.formatSignData(map);
+        String signData = SignUtils.buildParams(params);
         String sign = xiaMiOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("sign", sign);
         //请求支付

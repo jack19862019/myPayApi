@@ -5,11 +5,11 @@ import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.OrderEntity;
 import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
+import com.pay.rmi.common.utils.SignUtils;
 import com.pay.rmi.paythird.OrderApiFactory;
 import com.pay.rmi.paythird.PayService;
 import com.pay.rmi.paythird.jialian.JiaLianBackHelper;
 import com.pay.rmi.paythird.jialian.JiaLianOrderHelper;
-import com.pay.rmi.paythird.kuailefu.util.StrKit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class JiaLian extends OrderApiFactory implements PayService {
         //请求基本参数
         Map<String, String> map = jiaLianOrderHelper.requestToUpParams(reqParams);
         //加签
-        String signData = StrKit.formatSignData(map);
+        String signData = SignUtils.buildParams(params);
         String sign = jiaLianOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("sign", sign);
         //from表单提交
