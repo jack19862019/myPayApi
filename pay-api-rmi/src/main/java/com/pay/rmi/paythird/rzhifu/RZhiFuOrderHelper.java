@@ -1,5 +1,4 @@
-package com.pay.rmi.paythird.xincheng;
-
+package com.pay.rmi.paythird.rzhifu;
 import com.pay.common.exception.Assert;
 import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
@@ -16,11 +15,14 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 
 @Component
-public class XinChengOrderHelper extends OrderApiFactory implements ParamsService, ReturnDownService {
+public class RZhiFuOrderHelper extends OrderApiFactory implements ParamsService, ReturnDownService {
 
     public void init(ChannelEntity channel, McpConfigEntity mcpConfig, OrderReqParams reqParams) {
         this.channel = channel;
@@ -32,15 +34,17 @@ public class XinChengOrderHelper extends OrderApiFactory implements ParamsServic
     public Map<String, String> requestToUpParams(OrderReqParams reqParams) {
         Optional<UpPayTypeEntity> upPayTypeEntity = channel.getUpPayTypes().stream()
                 .filter(e -> e.getPayType().getPayTypeFlag().equals(reqParams.getOutChannel())).findFirst();
-        Assert.mustBeTrue(upPayTypeEntity.isPresent(), "新城不支持的支付方式:" + reqParams.getOutChannel());
-        params.put("CreateTradeNo", reqParams.getOrderNo());
-        params.put("UserId", mcpConfig.getUpMerchantNo());
-        params.put("PayTimes", (System.currentTimeMillis()+"").substring(0, 10));
-        params.put("ReturnUrl", reqParams.getReturnUrl());
-        params.put("NotifyUrl", getCallbackUrl());
-        params.put("BankCode", upPayTypeEntity.get().getUpPayTypeName());
-        params.put("ShopNames", "test");
-        params.put("CreateMoney", new DecimalFormat("#.00").format(new BigDecimal(reqParams.getAmount())));
+        Assert.mustBeTrue(upPayTypeEntity.isPresent(), "和记不支持的支付方式:" + reqParams.getOutChannel());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        params.put("api_code", mcpConfig.getUpMerchantNo());
+        params.put("is_type",  upPayTypeEntity.get().getUpPayTypeFlag());
+        params.put("order_id", reqParams.getOrderNo());
+        params.put("return_url", reqParams.getReturnUrl());
+        params.put("notify_url", getCallbackUrl());
+        params.put("return_type", "json");
+        params.put("price",  new DecimalFormat("#.00").format(new BigDecimal(reqParams.getAmount())));
+        params.put("time", sdf.format(new Date()));
+        params.put("mark", reqParams.getMemo());
         return params;
     }
 
@@ -51,10 +55,11 @@ public class XinChengOrderHelper extends OrderApiFactory implements ParamsServic
 
     @Override
     public OrderApiRespParams returnDown(String result) {
+        OrderApiRespParams orderApiRespParams = BeanCopyUtils.copyBean(reqParams, OrderApiRespParams.class);
         saveOrder(reqParams, mcpConfig.getUpMerchantNo());
 
-        OrderApiRespParams orderApiRespParams = BeanCopyUtils.copyBean(reqParams, OrderApiRespParams.class);
         orderApiRespParams.setPay_form(BuildFormUtils.buildSubmitForm(result, params));
         return orderApiRespParams;
+
     }
 }
