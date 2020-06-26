@@ -81,6 +81,24 @@ public class SignUtils {
         return sb.toString();
     }
 
+    public static String buildParams4(Map<String, String> params, Boolean sort) {
+        StringBuffer sb = new StringBuffer();
+        List<String> keys = new ArrayList<>(params.keySet());
+        if (sort) {
+            Collections.sort(keys);
+        }
+        for (String key : keys) {
+            String value = String.valueOf(params.get(key));
+            sb.append(key).append("=");
+            if (StringUtils.isNotBlank(value) && !"null".equals(value)) {
+                sb.append(value);
+            }
+            sb.append("&");
+        }
+        sb.setLength(sb.length() - 1);
+        return sb.toString();
+    }
+
     public static String buildParamsIgnoreNull(Map<String, String> params) {
         StringBuffer sb = new StringBuffer();
         List<String> keys = new ArrayList<>(params.keySet());
