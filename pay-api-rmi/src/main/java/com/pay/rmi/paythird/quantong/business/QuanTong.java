@@ -36,7 +36,7 @@ public class QuanTong extends OrderApiFactory implements PayService {
         //请求基本参数
         Map<String, String> map = quanTongOrderHelper.requestToUpParams(reqParams);
         //加签
-        String signData = SignUtils.buildParams(params);
+        String signData = SignUtils.buildParams(map);
         String hmac = quanTongOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("hmac", hmac);
 

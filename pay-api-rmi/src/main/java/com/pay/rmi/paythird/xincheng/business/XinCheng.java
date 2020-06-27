@@ -36,7 +36,7 @@ public class XinCheng extends OrderApiFactory implements PayService {
         //请求基本参数
         Map<String, String> map = xinChengOrderHelper.requestToUpParams(reqParams);
         //加签
-        String signData = SignUtils.buildParams(params);
+        String signData = SignUtils.buildParams(map);
         String sign = xinChengOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("Sign", sign);
         //from表单提交

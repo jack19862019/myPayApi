@@ -36,7 +36,7 @@ public class TongDa extends OrderApiFactory implements PayService {
         //请求基本参数
         Map<String, String> map = tongDaOrderHelper.requestToUpParams(reqParams);
         //加签
-        String signData = SignUtils.buildParams(params);
+        String signData = SignUtils.buildParams(map);
         String sign = tongDaOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("sign", sign);
         //请求支付
