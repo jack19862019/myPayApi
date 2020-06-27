@@ -1,7 +1,7 @@
 server:
   tomcat:
     uriEncoding: UTF-8
-  port: 10086
+  port: 10088
   servlet:
     context-path: /pay
 

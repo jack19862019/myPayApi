@@ -19,10 +19,8 @@ import com.pay.data.mapper.MerchantRepository;
 import com.pay.data.mapper.OrderRepository;
 import com.pay.data.mapper.SysUserRepository;
 import com.pay.data.supper.AbstractHelper;
-import com.pay.manager.pc.order.params.OrderAmountParams;
-import com.pay.manager.pc.order.params.OrderPageReqParams;
-import com.pay.manager.pc.order.params.OrderPageRespParams;
-import com.pay.manager.pc.order.params.OrderQuery;
+import com.pay.manager.pc.order.params.*;
+import com.tuyang.beanutils.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -127,6 +125,13 @@ public class OrderServiceImpl extends AbstractHelper<OrderRepository, OrderEntit
         }
         orderAmountParamsList.sort(Comparator.comparing(OrderAmountParams::getTotalAmount).reversed());
         return orderAmountParamsList.stream().limit(page).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderDetailBaseParams getOrderDetail(Long id) {
+        OrderEntity order = getById(id);
+        OrderDetailBaseParams orderDetail = BeanCopyUtils.copyBean(order, OrderDetailBaseParams.class);
+        return null;
     }
 
     @Autowired

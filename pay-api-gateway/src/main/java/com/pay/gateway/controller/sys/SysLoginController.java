@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,16 @@ public class SysLoginController {
         redisTemplate.opsForValue().set("login:user:token"+username, token, expiration, TimeUnit.SECONDS);
         redisTemplate.opsForValue().set("login:user:" + username, JSON.toJSONString(jwtUser), expiration, TimeUnit.SECONDS);
         return Result.success(token);
+    }
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+        String hashPass = bcryptPasswordEncoder.encode("123456");
+        System.out.println(hashPass);
+
+        boolean f = bcryptPasswordEncoder.matches("123456",hashPass);
+        System.out.println(f);
+
     }
 
     @ApiOperation(value = "登出")

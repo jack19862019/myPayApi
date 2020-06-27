@@ -3,9 +3,11 @@ package com.pay.rmi.paythird;
 import com.pay.data.entity.ChannelEntity;
 import com.pay.data.entity.McpConfigEntity;
 import com.pay.data.entity.OrderEntity;
+import com.pay.data.entity.UpPayTypeEntity;
 import com.pay.data.mapper.ChannelRepository;
 import com.pay.data.mapper.MerchantRepository;
 import com.pay.data.mapper.PayTypeRepository;
+import com.pay.data.mapper.UpPayTypeRepository;
 import com.pay.data.params.OrderReqParams;
 import com.pay.rmi.api.resp.OrderApiRespParams;
 import com.pay.rmi.pay.order.delay.NotifyTask;
@@ -45,6 +47,9 @@ public class OrderApiFactory {
 
     protected void saveOrder(OrderReqParams reqParams, String upMerchantNo) {
         OrderEntity order = BeanCopyUtils.copyBean(reqParams, OrderEntity.class);
+        UpPayTypeEntity upPayTypeEntity = upPayTypeRepository
+                .findByPayType_PayTypeFlagAndChannel_ChannelFlag(reqParams.getOutChannel(), reqParams.getChannelNo());
+        order.setUpPayType(upPayTypeEntity);
         order.setChannel(channelRepository.findByChannelFlag(reqParams.getChannelNo()));
         order.setMerchant(merchantRepository.findByMerchantNo(reqParams.getMerchNo()));
         order.setOrderAmount(new BigDecimal(reqParams.getAmount()));
@@ -67,4 +72,7 @@ public class OrderApiFactory {
 
     @Autowired
     protected ApiOrderService orderService;
+
+    @Autowired
+    protected UpPayTypeRepository upPayTypeRepository;
 }

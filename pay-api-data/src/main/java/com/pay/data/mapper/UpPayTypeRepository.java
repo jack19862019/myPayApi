@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UpPayTypeRepository extends BaseRepository<UpPayTypeEntity, Long> {
 
-    UpPayTypeEntity findByUpPayTypeFlag(String upPayTypeFlag);
+    UpPayTypeEntity findByPayType_PayTypeFlagAndChannel_ChannelFlag(String payTypeFlag, String channelFlag);
 
     List<UpPayTypeEntity> findAllByChannel(ChannelEntity channelEntity);
 

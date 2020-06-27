@@ -24,6 +24,12 @@ public class OrderController {
         return Result.success(orderService.selectOrderPage(orderQuery, reqParams));
     }
 
+    @GetMapping("{id}")
+    @ApiOperation(value = "订单详情")
+    public Result getOrderDetail(@PathVariable Long id) {
+        return Result.success(orderService.getOrderDetail(id));
+    }
+
     @PostMapping("send/callback")
     @ApiOperation(value = "手动回调订单")
     public Result sendCallback(@RequestBody OrderPageReqParams reqParams) {
