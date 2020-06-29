@@ -38,7 +38,7 @@ public class XinChengOrderHelper extends OrderApiFactory implements ParamsServic
         params.put("PayTimes", (System.currentTimeMillis()+"").substring(0, 10));
         params.put("ReturnUrl", reqParams.getReturnUrl());
         params.put("NotifyUrl", getCallbackUrl());
-        params.put("BankCode", upPayTypeEntity.get().getUpPayTypeName());
+        params.put("BankCode", upPayTypeEntity.get().getUpPayTypeFlag());
         params.put("ShopNames", "test");
         params.put("CreateMoney", new DecimalFormat("#.00").format(new BigDecimal(reqParams.getAmount())));
         return params;

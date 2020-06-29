@@ -43,7 +43,7 @@ public class WeiHuOrderHelper extends OrderApiFactory implements ParamsService, 
         DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         Calendar calendar = Calendar.getInstance();
 
-        String payType = upPayTypeEntity.get().getUpPayTypeName();
+        String payType = upPayTypeEntity.get().getUpPayTypeFlag();
         Map<String, String> param = new TreeMap<>();
         param.put("order_no", reqParams.getOrderNo());
         param.put("amount", new DecimalFormat("#.00").format(new BigDecimal(reqParams.getAmount())));

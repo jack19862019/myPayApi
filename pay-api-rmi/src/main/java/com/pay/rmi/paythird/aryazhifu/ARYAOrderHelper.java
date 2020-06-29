@@ -40,7 +40,7 @@ public class ARYAOrderHelper extends OrderApiFactory implements ParamsService, R
         Assert.mustBeTrue(upPayTypeEntity.isPresent(), "arya支付不支持的支付方式:" + reqParams.getOutChannel());
         params.put("uid", mcpConfig.getUpMerchantNo());
         params.put("money", new DecimalFormat("#.00").format(new BigDecimal(reqParams.getAmount())));
-        params.put("channel", upPayTypeEntity.get().getUpPayTypeName());
+        params.put("channel", upPayTypeEntity.get().getUpPayTypeFlag());
         params.put("outTradeNo", reqParams.getOrderNo());
         params.put("returnUrl", reqParams.getReturnUrl());
         params.put("notifyUrl",  getCallbackUrl());

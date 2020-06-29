@@ -73,6 +73,7 @@ public class SysLogAspect {
     private String getUserName() {
         try {
             return getUsername();
+
         }catch (Exception e){
             return "";
         }

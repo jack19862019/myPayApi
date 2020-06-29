@@ -36,7 +36,7 @@ public class HaiPingXian extends OrderApiFactory implements PayService {
         //请求基本参数
         Map<String, String> map = haiPingXianOrderHelper.requestToUpParams(reqParams);
         //加签
-        String signData = SignUtils.buildParams(params);
+        String signData = SignUtils.buildParams(map);
         String sign = haiPingXianOrderHelper.signToUp(signData, mcpConfig.getUpKey());
         map.put("sign", sign);
         //请求支付
