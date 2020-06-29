@@ -12,12 +12,8 @@ import com.pay.common.security.SecurityUtils;
 import com.pay.common.utils.api.Base64Utils;
 import com.pay.common.utils.api.Md5Utils;
 import com.pay.common.utils.api.OrderParamKey;
-import com.pay.data.entity.MerchantEntity;
-import com.pay.data.entity.OrderEntity;
-import com.pay.data.entity.SysUserEntity;
-import com.pay.data.mapper.MerchantRepository;
-import com.pay.data.mapper.OrderRepository;
-import com.pay.data.mapper.SysUserRepository;
+import com.pay.data.entity.*;
+import com.pay.data.mapper.*;
 import com.pay.data.supper.AbstractHelper;
 import com.pay.manager.pc.order.params.*;
 import com.tuyang.beanutils.BeanCopyUtils;
@@ -131,7 +127,24 @@ public class OrderServiceImpl extends AbstractHelper<OrderRepository, OrderEntit
     public OrderDetailBaseParams getOrderDetail(Long id) {
         OrderEntity order = getById(id);
         OrderDetailBaseParams orderDetail = BeanCopyUtils.copyBean(order, OrderDetailBaseParams.class);
-        return null;
+        orderDetail.setMerchantNo(order.getMerchant().getMerchantNo());
+        orderDetail.setMerchantName(order.getMerchant().getMerchantName());
+        orderDetail.setChannelFlag(order.getChannel().getChannelFlag());
+        orderDetail.setChannelName(order.getChannel().getChannelName());
+        orderDetail.setUpPayTypeName(order.getUpPayType().getUpPayTypeName());
+        orderDetail.setUpPayTypeFlag(order.getUpPayType().getUpPayTypeFlag());
+        orderDetail.setPayTypeFlag(order.getUpPayType().getPayType().getPayTypeFlag());
+        orderDetail.setPayTypeName(order.getUpPayType().getPayType().getPayTypeName());
+
+        McpConfigEntity mcpConfig = mcpConfigRepository.findByChannel_IdAndMerchant_Id(order.getChannel().getId(), order.getMerchant().getId());
+        orderDetail.setUpKey(mcpConfig.getUpKey());
+        orderDetail.setEncryptionType(mcpConfig.getEncryptionType());
+        orderDetail.setRealAmount(order.getRealAmount() == null ? BigDecimal.ZERO : order.getRealAmount());
+
+        List<PayLogEntity> orderNoList = payLogRepository.findAllByOrderNo(order.getOrderNo());
+
+        orderDetail.setOrderLogParamsList(BeanCopyUtils.copyList(orderNoList, OrderLogParams.class));
+        return orderDetail;
     }
 
     @Autowired
@@ -145,4 +158,10 @@ public class OrderServiceImpl extends AbstractHelper<OrderRepository, OrderEntit
 
     @Autowired
     SysUserRepository sysUserRepository;
+
+    @Autowired
+    McpConfigRepository mcpConfigRepository;
+
+    @Autowired
+    PayLogRepository payLogRepository;
 }

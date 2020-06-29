@@ -18,11 +18,13 @@ public class OrderDetailBaseParams {
 
     private String businessNo;
 
-    private MerchantEntity merchant;
+    private String merchantNo;
 
-    private ChannelEntity channel;
+    private String merchantName;
 
-    private String upMerchantNo;
+    private String channelFlag;
+
+    private String channelName;
 
     private String upPayTypeName;
 
@@ -31,6 +33,8 @@ public class OrderDetailBaseParams {
     private String payTypeName;
 
     private String payTypeFlag;
+
+    private String upMerchantNo;
 
     private String upKey;
 
