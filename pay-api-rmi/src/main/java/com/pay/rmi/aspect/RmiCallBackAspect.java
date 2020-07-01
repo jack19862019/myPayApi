@@ -28,7 +28,7 @@ public class RmiCallBackAspect extends BaseAspect {
     @Before("logCallBack()")
     public void logSignToUp(JoinPoint pjd) {
         map.put(isOrder, IsOrder.BACK);
-        map.put(sortStr, 0);
+        map.put(sortStr, 99);
         map.put(methodName, pjd.getSignature().getName());
         Map<String, String> mapReqParams = (Map<String, String>) pjd.getArgs()[2];
         map.put(orderNo, ((OrderEntity) pjd.getArgs()[1]).getOrderNo());
