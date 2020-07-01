@@ -57,23 +57,18 @@ public class KaTongOrderHelper extends OrderApiFactory implements ParamsService,
         params.put("returnUrl", reqParams.getReturnUrl());
         params.put("ts", Instant.now().getEpochSecond()+"");
 
-        String signReduce = KaTongUtil.generateSignReduce(params);
-        String sign =KaTongUtil.encodeMD5(signReduce + "&key=" + mcpConfig.getUpKey());
-        params.put("sign", sign);
-        params.put("signReduce", signReduce);
         return params;
     }
 
     @Override
     public String signToUp(String context, String upKey) {
-        return PayMD5.MD5Encode(context + mcpConfig.getUpKey()).toLowerCase();
+        return KaTongUtil.encodeMD5(context + "&key=" + mcpConfig.getUpKey());
     }
 
     @Override
     public OrderApiRespParams returnDown(String result) {
         OrderApiRespParams orderApiRespParams = BeanCopyUtils.copyBean(reqParams, OrderApiRespParams.class);
         orderApiRespParams.setCode_url(result);
-        saveOrder(reqParams, mcpConfig.getUpMerchantNo());
         return orderApiRespParams;
     }
 }
