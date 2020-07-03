@@ -22,6 +22,8 @@ import java.util.Date;
 @Data
 @BeanCopySource(source = OrderEntity.class)
 public class OrderPageRespParams {
+
+    private Long id;
     //订单号
     private String orderNo;
 
@@ -38,7 +40,7 @@ public class OrderPageRespParams {
     private String channelName;
 
     //支付方式名称
-    @CopyProperty(property = "payType.payTypeName")
+    @CopyProperty(property = "upPayType.upPayTypeName")
     private String payTypeName;
 
     //订单金额

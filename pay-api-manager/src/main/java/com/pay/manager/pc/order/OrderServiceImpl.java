@@ -31,6 +31,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Slf4j
 @Service
 public class OrderServiceImpl extends AbstractHelper<OrderRepository, OrderEntity, Long> implements OrderService {
@@ -120,7 +122,7 @@ public class OrderServiceImpl extends AbstractHelper<OrderRepository, OrderEntit
             });
         }
         orderAmountParamsList.sort(Comparator.comparing(OrderAmountParams::getTotalAmount).reversed());
-        return orderAmountParamsList.stream().limit(page).collect(Collectors.toList());
+        return orderAmountParamsList.stream().limit(page).collect(toList());
     }
 
     @Override
@@ -142,8 +144,9 @@ public class OrderServiceImpl extends AbstractHelper<OrderRepository, OrderEntit
         orderDetail.setRealAmount(order.getRealAmount() == null ? BigDecimal.ZERO : order.getRealAmount());
 
         List<PayLogEntity> orderNoList = payLogRepository.findAllByOrderNo(order.getOrderNo());
-
-        orderDetail.setOrderLogParamsList(BeanCopyUtils.copyList(orderNoList, OrderLogParams.class));
+        List<OrderLogParams> orderLogParams = BeanCopyUtils.copyList(orderNoList, OrderLogParams.class);
+        orderLogParams = orderLogParams.stream().sorted(Comparator.comparing(OrderLogParams::getSort)).collect(toList());//根据创建时间倒排
+        orderDetail.setOrderLogParamsList(orderLogParams);
         return orderDetail;
     }
 
